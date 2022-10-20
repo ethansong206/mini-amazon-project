@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.uid.label }}<br/>
+    {{ form.uid(size=32) }}<br/>
+    {% for error in form.uid.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+
+<h2>User Review on Purchase:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User_id</th>
+      <th scope="col">Product_id</th>
+      <th scope="col">Review_time</th>
+      <th scope="col">Review_content</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for reviews in reviews%}
+      <tr>
+        <th scope="row">{{reviews.uid}}</th>
+        <th>{{reviews.pid}}</th>  
+        <td>{{reviews.review_time}}</td>
+        <td>{{reviews.review_content}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br><br>
+
+{% endblock %}
+

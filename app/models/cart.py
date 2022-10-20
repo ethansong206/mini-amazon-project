@@ -6,10 +6,11 @@ class Cart:
     This is just a TEMPLATE for Cart, you should change this by adding or 
         replacing new columns, etc. for your design.
     """
-    def __init__(self, id, uid, pid, time_added_to_cart):
+    def __init__(self,id, uid, pid, name, time_added_to_cart):
         self.id = id
         self.uid = uid
         self.pid = pid
+        self.name = name
         self.time_added_to_cart = time_added_to_cart
 
     @staticmethod
@@ -33,4 +34,15 @@ ORDER BY time_added_to_cart DESC
 ''',
                               uid=uid,
                               since=since)
+        return [Cart(*row) for row in rows]
+
+    @staticmethod
+    def get_all_by_uid(uid):
+        rows = app.db.execute('''
+SELECT Cart.id as id, uid, pid, name, time_added_to_cart
+FROM Cart, Products
+WHERE uid = :uid
+and Cart.pid=Products.id
+''',
+                              uid=uid)
         return [Cart(*row) for row in rows]

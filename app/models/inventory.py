@@ -31,3 +31,13 @@ WHERE uid = :uid
 ''',
                               id=id)
         return Inventory(*(rows[0])) if rows else None
+    @staticmethod
+    def get_all_by_uid(uid):
+        rows = app.db.execute('''
+SELECT uid, pid, count
+FROM Inventory
+WHERE uid = :uid
+and count>0 
+''',
+                              uid=uid)
+        return [Inventory(*row) for row in rows]

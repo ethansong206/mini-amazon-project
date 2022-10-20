@@ -27,3 +27,14 @@ WHERE available = :available
 ''',
                               available=available)
         return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_by_top_k(k):
+        rows = app.db.execute('''
+SELECT id, name, price, available
+FROM Products
+order by price desc
+limit :k
+''',
+                             k=k)
+        return [Product(*row) for row in rows]

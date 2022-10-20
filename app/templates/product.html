@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>
+
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.k.label }}<br/>
+    {{ form.k(size=32) }}<br/>
+    {% for error in form.k.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+
+<h2>Top Most Expensive Product:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product_id</th> 
+      <th scope="col">Product_name</th>
+      <th scope="col">Product_price</th>
+      <th scope="col">Purchase_available</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for products in products%}
+      <tr>
+        <th scope="row">{{products.id}}</th>  
+        <th>{{products.name}}</th>
+        <td>{{products.price}}</td>
+        <td>{{products.available}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br><br>
+
+{% endblock %}
+

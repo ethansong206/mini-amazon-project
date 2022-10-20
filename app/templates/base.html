@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+  
+
 <head>
   <title>Mini Amazon</title>
   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -45,8 +47,11 @@
   </style>
 </head>
 
+
+
 <body>
-  <div class="sidenav">
+
+<div class="sidenav">
     {% block msg %}
       <h1 style="color:aliceblue">Welcome to CompSci 316 Mini Amazon!</h1>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
@@ -58,9 +63,46 @@
       </div>
     {% endblock %}
   </div>
-  <div class="main">
-    {% block content %}{% endblock %}
+
+
+
+   <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 130px;">
+    <a class="navbar-brand" href="/">Navigation</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <!-- Only display user-related functions if logged in -->
+      </li>
+      {% if current_user.is_authenticated %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Search
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/SearchPurchase">Purchase Search</a>
+          <a class="dropdown-item" href="/SearchProduct">Product Search</a>
+          <a class="dropdown-item" href="/SearchCart">Cart Search</a>
+          <a class="dropdown-item" href="/SearchInventory">Inventory Search</a>
+          <a class="dropdown-item" href="/SearchReview">Review Search</a>
+        </div>
+      </li>
+      {% endif %}
+    </ul>
   </div>
+</nav>
+
+
+<div class="main">
+  {% block content %}{% endblock %}
+</div>
 </body>
+
+</body>
+
 
 </html>
