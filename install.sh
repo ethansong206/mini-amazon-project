@@ -1,10 +1,11 @@
 #!/bin/bash
 
-mypath=`realpath $0`
-mybase=`dirname $mypath`
-cd $mybase
+mypath=$(realpath "$0")
+mybase=$(dirname "$mypath")
 
-SECRET=`tr -dc 'a-z0-9-_' < /dev/urandom | head -c50`
+cd "$mybase"
+
+SECRET=$(tr -dc 'a-z0-9-_' < /dev/urandom | head -c50)
 echo "FLASK_APP=amazon.py
 FLASK_DEBUG=True
 FLASK_RUN_HOST=0.0.0.0
