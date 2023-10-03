@@ -10,9 +10,11 @@ class WishlistItem:
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-        
-        ''')
-        return None
+        SELECT id, uid, pid, time_added
+        FROM Wishes
+        WHERE id = :id
+        ''', id=id)
+        return WishlistItem(*(rows[0])) if rows else None
 
     @staticmethod
     def get_all_by_uid(uid):
@@ -40,7 +42,7 @@ class WishlistItem:
             time_added=time_added
             )
             id = rows[0][0]
-            return Wishes.get(id)
+            return WishlistItem.get(id)
         except Exception as e:
             print(str(e))
             return None
