@@ -66,6 +66,7 @@ CREATE TABLE Purchases(
     num_items INT NOT NULL,
     price DECIMAL(12,2) NOT NULL,
     status VARCHAR(255) NOT NULL,
+    time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     time_updated timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
     PRIMARY KEY (order_id, seller_id, pid),
     FOREIGN KEY (order_id) REFERENCES Orders(id),
