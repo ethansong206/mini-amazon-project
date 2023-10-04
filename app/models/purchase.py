@@ -5,7 +5,7 @@ from .order import Order
 class Purchase:
     def __init__(self, order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated):
         self.order_id = order_id
-        self.seller_id = seller_uid
+        self.seller_id = seller_id
         self.pid = pid
         self.num_items = num_items
         self.price = price
