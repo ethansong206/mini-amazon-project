@@ -11,6 +11,8 @@ class User(UserMixin):
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
+        self.balance = balance
+        self.address = address
 
     @staticmethod
     def get_by_auth(email, password):

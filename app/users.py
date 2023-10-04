@@ -6,7 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
-
+from .models.purchase import Purchase
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -36,6 +36,17 @@ def login():
 
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+
+@bp.route('/purchase')
+def purchase_history():
+    # find the products current user has in wishlist:
+    
+    items = Purchase.get_all_by_uid_since(
+            current_user.id, datetime.datetime(1900, 9, 14, 0, 0, 0))
+    # render the page by adding information to the wishlist.html file
+    return jsonify([item.__dict__ for item in items])
+
+
 
 
 class RegistrationForm(FlaskForm):
