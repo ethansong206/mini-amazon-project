@@ -14,7 +14,7 @@ class Purchase:
     @staticmethod
     def get(order_id, seller_id, pid):
         rows = app.db.execute('''
-SELECT order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated
+SELECT order_id, seller_id, pid, num_items, price, p.status, time_purchased, time_updated
 FROM Purchases AS p
 INNER JOIN Orders AS o
 ON p.order_id = o.id
@@ -30,7 +30,7 @@ AND p.pid = :pid
     @staticmethod
     def get_all_by_uid_since(uid, since):
         rows = app.db.execute('''
-SELECT order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated
+SELECT order_id, seller_id, pid, num_items, price, p.status, time_purchased, time_updated
 FROM Purchases AS p
 INNER JOIN Orders AS o
 ON p.order_id = o.id

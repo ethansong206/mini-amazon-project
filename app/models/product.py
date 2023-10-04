@@ -28,7 +28,7 @@ SELECT id, creator_id, name, category, description, image
 FROM Products
 WHERE category = :category
 ''',
-                              category=category)
+                              category=str(category))
         return [Product(*row) for row in rows]
 
     @staticmethod
