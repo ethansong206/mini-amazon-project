@@ -6,7 +6,6 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
-from .models.purchase import Purchase
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -39,7 +38,7 @@ def login():
 
 @bp.route('/purchase')
 def purchase_history():
-    items = Purchase.get_purchase_history(
+    items = User.get_purchase_history(
             uid)
     return jsonify([item.__dict__ for item in items])
 
