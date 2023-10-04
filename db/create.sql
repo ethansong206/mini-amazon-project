@@ -46,7 +46,7 @@ CREATE TABLE Orders (
     FOREIGN KEY (uid) REFERENCES Users(id)
 );
 
-CREATE TABLE SavedItem (
+CREATE TABLE SavedItems (
     uid INT NOT NULL,
     seller_id INT NOT NULL,
     pid INT NOT NULL,
