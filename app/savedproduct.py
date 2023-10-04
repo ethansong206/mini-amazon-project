@@ -16,3 +16,8 @@ def saved():
                                 cart_items=cart_items,
                                 wish_items=wish_items)
     return None
+
+@bp.route('/saved/add/<int:product_id>/<int:seller_id>', methods=['POST'])
+def saved_add(pid, seller_id):
+    SavedItem.add_item(current_user.id, seller_id, pid, 1, True, datetime.datetime.now())
+    return redirect(url_for('saved.saved'))

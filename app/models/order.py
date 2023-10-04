@@ -30,5 +30,4 @@ class Order:
 
         return [Order(*row) for row in rows]
 
-    @staticmethod
-    def submit()
+    # add submit method
