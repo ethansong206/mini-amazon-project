@@ -1,17 +1,20 @@
 from flask import current_app as app
 
+from .inventory import Inventory
 
 class Product:
-    def __init__(self, id, name, price, available):
-        self.id = id
+    def __init__(self, id, creator_id, name, category, description, image):
+        self.pid = id
+        self.creator_id = creator_id
         self.name = name
-        self.price = price
-        self.available = available
+        self.category = category
+        self.description = description
+        self.image = image
 
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, name, price, available
+SELECT id, creator_id, name, category, description, image
 FROM Products
 WHERE id = :id
 ''',
@@ -19,11 +22,25 @@ WHERE id = :id
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all(available=True):
+    def get_all(category):
         rows = app.db.execute('''
-SELECT id, name, price, available
+SELECT id, creator_id, name, category, description, image
 FROM Products
-WHERE available = :available
+WHERE category = :category
 ''',
-                              available=available)
+                              category=category)
+        return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_most_expensive(k, category):
+        rows = app.db.execute('''
+SELECT p.id, p.creator_id, p.name, p.category, p.description, p.image, i.price, i.quantity
+FROM Products as p, Inventory as i
+WHERE p.category = :category
+AND p.id = i.pid
+AND p.creator_id = i.seller_id
+ORDER BY i.price DESC
+LIMIT k
+''',
+                              category=category)
         return [Product(*row) for row in rows]
