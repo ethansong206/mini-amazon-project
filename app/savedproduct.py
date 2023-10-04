@@ -18,6 +18,6 @@ def saved():
     return None
 
 @bp.route('/saved/add/<int:product_id>/<int:seller_id>', methods=['POST'])
-def saved_add(pid, seller_id):
-    SavedItem.add_item(current_user.id, seller_id, pid, 1, True, datetime.datetime.now())
+def saved_add(pid):
+    SavedItem.add_item(current_user.id, pid, 1, True, datetime.datetime.now())
     return redirect(url_for('saved.saved'))
