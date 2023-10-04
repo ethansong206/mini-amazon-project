@@ -71,7 +71,7 @@ WHERE id = :id
         return User(*(rows[0])) if rows else None
 
     @staticmethod
-    def get_purchase_history(uid)
+    def get_purchase_history(uid):
         rows = app.db.execute('''
 SELECT order_id, seller_id, pid, num_items, price, time_updated
 FROM Purchases

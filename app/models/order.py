@@ -1,7 +1,5 @@
 from flask import current_app as app
 
-from .purchase import Purchase
-
 class Order:
     def __init__(self, id, uid, status, timestamp):
         self.id = id
