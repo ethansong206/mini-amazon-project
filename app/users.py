@@ -39,11 +39,9 @@ def login():
 
 @bp.route('/purchase')
 def purchase_history():
-    items = Purchase.get_all_by_uid_since(
-            current_user.id, datetime.datetime(1900, 9, 14, 0, 0, 0))
+    items = Purchase.get_purchase_history(
+            uid)
     return jsonify([item.__dict__ for item in items])
-
-
 
 
 class RegistrationForm(FlaskForm):

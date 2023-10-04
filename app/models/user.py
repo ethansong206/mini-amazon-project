@@ -6,7 +6,7 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, id, email, firstname, lastname):
+    def __init__(self, id, email, firstname, lastname, balance, address):
         self.id = id
         self.email = email
         self.firstname = firstname
@@ -17,7 +17,7 @@ class User(UserMixin):
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, id, email, firstname, lastname
+SELECT password, id, email, firstname, lastname, balance, address
 FROM Users
 WHERE email = :email
 """,
@@ -69,3 +69,16 @@ WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+
+    @staticmethod
+    def get_purchase_history(uid)
+        rows = app.db.execute('''
+SELECT order_id, seller_id, pid, num_items, price, time_updated
+FROM Purchases
+WHERE order_id IN (
+    SELECT id FROM Orders
+    WHERE uid = :uid
+)
+''',
+                              uid = uid)
+        return Purchase(*(rows[0])) if rows else None
