@@ -54,14 +54,20 @@ class SavedItem:
         return [SavedItem(*row) for row in rows]
     
     @staticmethod
-    def add_item(uid, seller_id, pid, num_items, in_cart, time_added):
+    def add_item(uid, pid, num_items, in_cart, time_added):
         try:
+            seller_id = app.db.execute('''
+            SELECT seller_id
+            FROM Products
+            WHERE pid=:pid
+            ''', pid=pid)
+
             rows = app.db.execute('''
             INSERT INTO SavedItems(uid, seller_id, pid, num_items, in_cart, time_added)
             VALUES (uid, seller_id, pid, num_items, in_cart, time_added)
             ''',
             uid=uid,
-            seller_id=seller_id,
+            seller_id=seller_id[0][0],
             pid=pid,
             num_items=num_items,
             in_cart=in_cart,
