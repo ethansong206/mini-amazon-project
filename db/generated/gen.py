@@ -6,6 +6,7 @@ num_users = 100
 num_products = 2000
 num_purchases = 2500
 num_inventory_items = 1000
+num_orders = 1000
 categories = ["Appliances", "Automotive Parts & Accessories", "Beauty & Personal Care", "Books & Media", "Clothing", "Shoes & Jewelry", "Electronics", "Grocery & Gourmet Food", "Health", "Household & Baby Care", "Home & Kitchen", "Sports & Outdoors", "Toys"]
 
 Faker.seed(0)
@@ -56,6 +57,17 @@ def gen_products(num_products):
             writer.writerow([pid, creator_id, name, category, description, ""])
         print(f'{num_products} generated')
     return
+
+def gen_orders(num_orders):
+    with open('Orders.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Orders...', end=' ', flush=True)
+        for id in range(num_orders):
+            uid = fake.random_int(min=0, max=num_users-1)
+            status = fake.random_element(elements=["Pending", "On Hold", "Fulfilled"])
+            timestamp = fake.date_time()
+            writer.writerow([id, uid, status, timestamp])
+        return
 
 
 def gen_purchases(num_purchases, available_pids):
@@ -111,9 +123,10 @@ def gen_inventories():
         print(f'{num_inventory_items} generated')
     return
 
-gen_users(num_users)
+# gen_users(num_users)
 gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
 gen_categories()
 gen_sellers()
 gen_inventories()
+gen_orders(num_orders)
