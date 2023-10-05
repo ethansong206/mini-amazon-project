@@ -5,7 +5,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from .. import login
 
-
 class User(UserMixin):
     def __init__(self, id, email, firstname, lastname, balance, address):
         self.id = id
@@ -83,4 +82,5 @@ WHERE order_id IN (
 )
 ''',
                               uid = uid)
-        return rows if rows else None
+        columns = ['order_id', 'seller_id', 'pid', 'num_items', 'price', 'status', 'time_purchased', 'time_updated', 'name']
+        return Purchase(*(rows[0])) if rows else []
