@@ -22,25 +22,26 @@ WHERE id = :id
         return Product(*(rows[0])) if rows is not None else None
 
     @staticmethod
-    def get_all(category):
-        rows = app.db.execute('''
-SELECT id, creator_id, name, category, description, image
-FROM Products
-WHERE category = :category
-''',
-                              category=str(category))
-        return [Product(*row) for row in rows]
-
-    @staticmethod
-    def get_most_expensive(k, category):
+    def get_all(quantity):
         rows = app.db.execute('''
 SELECT p.id, p.creator_id, p.name, p.category, p.description, p.image, i.price, i.quantity
 FROM Products as p, Inventory as i
-WHERE p.category = :category
-AND p.id = i.pid
+WHERE p.id = i.pid
+AND p.creator_id = i.seller_id
+AND i.quantity >= :quantity                                                        
+''',
+                              quantity=quantity)
+        return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_most_expensive(k):
+        rows = app.db.execute('''
+SELECT p.id, p.creator_id, p.name, p.category, p.description, p.image, i.price, i.quantity
+FROM Products as p, Inventory as i
+WHERE p.id = i.pid
 AND p.creator_id = i.seller_id
 ORDER BY i.price DESC
-LIMIT k
+LIMIT :k
 ''',
-                              category=category)
+                              k=k)
         return [Product(*row) for row in rows]
