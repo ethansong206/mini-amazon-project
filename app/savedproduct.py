@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, redirect
 from flask_login import current_user
 import datetime
 
@@ -15,7 +15,7 @@ def saved():
         return render_template('saved.html',
                                 cart_items=cart_items,
                                 wish_items=wish_items)
-    return None
+    return redirect("/")
 
 @bp.route('/saved/add/<int:product_id>/<int:seller_id>', methods=['POST'])
 def saved_add(pid):

@@ -32,7 +32,7 @@ class SavedItem:
     @staticmethod
     def get_all_cart_by_uid(uid):
         rows = app.db.execute('''
-        SELECT uid, seller_id, pid, num_items, time_added
+        SELECT uid, seller_id, pid, num_items, in_cart, time_added
         FROM SavedItems
         WHERE uid = :uid
         AND in_cart
@@ -44,7 +44,7 @@ class SavedItem:
     @staticmethod
     def get_all_wishlist_by_uid(uid):
         rows = app.db.execute('''
-        SELECT uid, seller_id, pid, num_items, time_added
+        SELECT uid, seller_id, pid, num_items, in_cart, time_added
         FROM SavedItems
         WHERE uid = :uid
         AND NOT in_cart
