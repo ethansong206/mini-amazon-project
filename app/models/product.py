@@ -31,7 +31,7 @@ AND p.creator_id = i.seller_id
 AND i.quantity >= :quantity                                                        
 ''',
                               quantity=quantity)
-        return [Product(*row) for row in rows]
+        return rows if rows else []
 
     @staticmethod
     def get_most_expensive(k):
@@ -44,4 +44,4 @@ ORDER BY i.price DESC
 LIMIT :k
 ''',
                               k=k)
-        return [Product(*row) for row in rows]
+        return rows if rows else []
