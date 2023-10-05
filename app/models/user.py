@@ -11,6 +11,8 @@ class User(UserMixin):
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
+        self.balance = 0
+        self.address = ""
 
     @staticmethod
     def get_by_auth(email, password):
@@ -67,3 +69,16 @@ WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+
+    @staticmethod
+    def get_purchase_history(uid):
+        rows = app.db.execute('''
+SELECT order_id, seller_id, pid, num_items, price, time_updated
+FROM Purchases
+WHERE order_id IN (
+    SELECT id FROM Orders
+    WHERE uid = :uid
+)
+''',
+                              uid = uid)
+        return Purchase(*(rows[0])) if rows else None

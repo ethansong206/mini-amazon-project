@@ -7,7 +7,6 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
 
-
 from flask import Blueprint
 bp = Blueprint('users', __name__)
 
@@ -36,6 +35,12 @@ def login():
 
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+
+@bp.route('/purchase')
+def purchase_history():
+    items = User.get_purchase_history(
+            uid)
+    return jsonify([item.__dict__ for item in items])
 
 
 class RegistrationForm(FlaskForm):
