@@ -6,7 +6,8 @@ num_users = 100
 num_products = 2000
 num_purchases = 2500
 num_inventory_items = 1000
-num_orders = 1000
+num_orders = 500
+num_saved_items = 500
 categories = ["Appliances", "Automotive Parts & Accessories", "Beauty & Personal Care", "Books & Media", "Clothing", "Shoes & Jewelry", "Electronics", "Grocery & Gourmet Food", "Health", "Household & Baby Care", "Home & Kitchen", "Sports & Outdoors", "Toys"]
 
 Faker.seed(0)
@@ -63,12 +64,33 @@ def gen_orders(num_orders):
         writer = get_csv_writer(f)
         print('Orders...', end=' ', flush=True)
         for id in range(num_orders):
+            if id % 100 == 0:
+                print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
             status = fake.random_element(elements=["Pending", "On Hold", "Fulfilled"])
             timestamp = fake.date_time()
             writer.writerow([id, uid, status, timestamp])
+        print(f'{num_orders} generated')
         return
 
+def gen_saved_items(num_saved_items):
+    with open('Saved_items.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Saved Items...', end=' ', flush=True)
+        for id in range(num_saved_items):
+            if id % 100 == 0:
+                print(f'{id}', end=' ', flush=True)
+            uid = fake.random_int(min=0, max=num_users-1)
+            seller_id = gen_random_seller_id()
+            if uid == seller_id:
+                uid = (uid + 1) % num_users
+            pid = fake.random_int(min=0, max=num_products)
+            num_items = fake.random_int(min=1, max=10)
+            in_cart = fake.random_element(elements=[True, False])
+            time_added = fake.date_time()            
+            writer.writerow([uid, seller_id, pid, num_items, in_cart, time_added])
+        print(f'{num_saved_items} generated')
+    return
 
 def gen_purchases(num_purchases, available_pids):
     # with open('Purchases.csv', 'w') as f:
@@ -123,10 +145,11 @@ def gen_inventories():
         print(f'{num_inventory_items} generated')
     return
 
-# gen_users(num_users)
+gen_users(num_users)
 gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
 gen_categories()
 gen_sellers()
 gen_inventories()
 gen_orders(num_orders)
+gen_saved_items(num_saved_items)
