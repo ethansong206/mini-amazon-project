@@ -32,26 +32,30 @@ class SavedItem:
     @staticmethod
     def get_all_cart_by_uid(uid):
         rows = app.db.execute('''
-        SELECT uid, seller_id, pid, num_items, in_cart, time_added
-        FROM SavedItems
+        SELECT uid, I.seller_id, I.pid, num_items, in_cart, time_added, price
+        FROM SavedItems S
+        INNER JOIN Inventory as I
+        ON I.seller_id = S.seller_id AND I.pid = I.pid
         WHERE uid = :uid
         AND in_cart
         ORDER BY time_added DESC
         ''',
         uid=uid)
-        return [SavedItem(*row) for row in rows]
+        return rows if rows else []
 
     @staticmethod
     def get_all_wishlist_by_uid(uid):
         rows = app.db.execute('''
-        SELECT uid, seller_id, pid, num_items, in_cart, time_added
-        FROM SavedItems
+        SELECT uid, I.seller_id, I.pid, num_items, in_cart, time_added, price
+        FROM SavedItems S
+        INNER JOIN Inventory as I
+        ON I.seller_id = S.seller_id AND I.pid = I.pid
         WHERE uid = :uid
         AND NOT in_cart
         ORDER BY time_added DESC
         ''',
         uid=uid)
-        return [SavedItem(*row) for row in rows]
+        return rows if rows else []
     
     @staticmethod
     def add_item(uid, pid, num_items, in_cart, time_added):
