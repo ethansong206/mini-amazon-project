@@ -60,17 +60,69 @@ class SavedItem:
             SELECT seller_id
             FROM Products
             WHERE pid=:pid
-            ''', pid=pid)
+            ''', pid=pid)[0][0]
 
             rows = app.db.execute('''
             INSERT INTO SavedItems(uid, seller_id, pid, num_items, in_cart, time_added)
-            VALUES (uid, seller_id, pid, num_items, in_cart, time_added)
+            VALUES (:uid, :seller_id, :pid, :num_items, :in_cart, :time_added)
             ''',
             uid=uid,
-            seller_id=seller_id[0][0],
+            seller_id=seller_id,
             pid=pid,
             num_items=num_items,
             in_cart=in_cart,
+            time_added=time_added
+            )
+            return SavedItem.get(uid, seller_id, pid)
+        except Exception as e:
+            print(str(e))
+            return None
+
+    @staticmethod
+    def to_cart(uid, pid, time_added):
+        try:
+            seller_id = app.db.execute('''
+            SELECT seller_id
+            FROM Products
+            WHERE pid=:pid
+            ''', pid=pid)[0][0]
+
+            rows = app.db.execute('''
+            UPDATE SavedItems
+            SET in_cart = True, time_added=:time_added
+            WHERE uid=:uid
+            AND pid=:pid
+            AND seller_id=:seller_id
+            ''',
+            uid=uid,
+            seller_id=seller_id,
+            pid=pid,
+            time_added=time_added
+            )
+            return SavedItem.get(uid, seller_id, pid)
+        except Exception as e:
+            print(str(e))
+            return None
+
+    @staticmethod
+    def to_wishlist(uid, pid, time_added):
+        try:
+            seller_id = app.db.execute('''
+            SELECT seller_id
+            FROM Products
+            WHERE pid=:pid
+            ''', pid=pid)[0][0]
+
+            rows = app.db.execute('''
+            UPDATE SavedItems
+            SET in_cart = False, time_added=:time_added
+            WHERE uid=:uid
+            AND pid=:pid
+            AND seller_id=:seller_id
+            ''',
+            uid=uid,
+            seller_id=seller_id,
+            pid=pid,
             time_added=time_added
             )
             return SavedItem.get(uid, seller_id, pid)
