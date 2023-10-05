@@ -5,6 +5,7 @@ from faker import Faker
 num_users = 100
 num_products = 2000
 num_purchases = 2500
+categories = ["Appliances", "Automotive Parts & Accessories", "Beauty & Personal Care", "Books & Media", "Clothing", "Shoes & Jewelry", "Electronics", "Grocery & Gourmet Food", "Health", "Household & Baby Care", "Home & Kitchen", "Sports & Outdoors", "Toys"]
 
 Faker.seed(0)
 fake = Faker()
@@ -66,7 +67,15 @@ def gen_purchases(num_purchases, available_pids):
         print(f'{num_purchases} generated')
     return
 
+def gen_categories():
+    with open('Categories.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Categories...')
+        for category in categories:
+            writer.writerow([category])
+    print(f'{len(categories)} generated')
 
 gen_users(num_users)
 available_pids = gen_products(num_products)
 gen_purchases(num_purchases, available_pids)
+gen_categories()
