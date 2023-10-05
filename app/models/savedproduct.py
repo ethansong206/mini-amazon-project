@@ -56,15 +56,15 @@ class SavedItem:
     @staticmethod
     def add_item(uid, pid, num_items, in_cart, time_added):
         try:
-            # seller_id = app.db.execute('''
-            # SELECT seller_id
-            # FROM Inventory
-            # WHERE pid=:pid
-            # ''', pid=pid)[0][0]
+            seller_id = app.db.execute('''
+            SELECT seller_id
+            FROM Products
+            WHERE pid=:pid
+            ''', pid=pid)[0][0]
 
             rows = app.db.execute('''
             INSERT INTO SavedItems(uid, seller_id, pid, num_items, in_cart, time_added)
-            VALUES (uid, seller_id, pid, num_items, in_cart, time_added)
+            VALUES (:uid, :seller_id, :pid, :num_items, :in_cart, :time_added)
             ''',
             uid=uid,
             seller_id=seller_id,
@@ -105,7 +105,7 @@ class SavedItem:
             return None
 
     @staticmethod
-    def to_cart(uid, pid, time_added):
+    def to_wishlist(uid, pid, time_added):
         try:
             seller_id = app.db.execute('''
             SELECT seller_id
@@ -115,7 +115,7 @@ class SavedItem:
 
             rows = app.db.execute('''
             UPDATE SavedItems
-            SET in_cart = True, time_added=:time_added
+            SET in_cart = False, time_added=:time_added
             WHERE uid=:uid
             AND pid=:pid
             AND seller_id=:seller_id

@@ -17,7 +17,7 @@ def saved():
                                 wish_items=wish_items)
     return redirect("/")
 
-@bp.route('/saved/add/<int:pid>', methods=['GET', 'POST'])
+@bp.route('/saved/add/<int:pid>', methods=['POST'])
 def saved_add(pid):
     SavedItem.add_item(current_user.id, pid, 1, True, datetime.datetime.now())
     return redirect(url_for('saved.saved'))
