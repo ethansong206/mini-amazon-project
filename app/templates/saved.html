@@ -21,7 +21,7 @@
         <tr>
             <th scope="row">{{item.pid}}</th>
             <td>{{item.num_items}}</td>
-            <td>{{item.price}}</td>
+            <td>${{item.price}}</td>
             <td>{{item.time_added}}</td>
         </tr>
         {% endfor %}
@@ -41,7 +41,7 @@
         {% for item in wish_items %}
         <tr>
             <th scope="row">{{item.pid}}</th>
-            <td>{{item.price}}</td>
+            <td>${{item.price}}</td>
             <td>{{item.time_added}}</td>
         </tr>
         {% endfor %}

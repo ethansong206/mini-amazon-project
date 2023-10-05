@@ -25,7 +25,7 @@
     <tr>
       <th scope="row">{{product.id}}</th>
       <td>{{product.name}}</td>
-      <td>{{product.price}}</td>
+      <td>${{product.price}}</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -55,7 +55,7 @@
       <th scope="row">{{purchase.name}}</th>
       <th scope="row">{{purchase.seller_id}}</th>
       <th scope="row">{{purchase.num_items}}</th>
-      <th scope="row">{{purchase.price}}</th>
+      <th scope="row">${{purchase.price}}</th>
       <th scope="row">{{purchase.status}}</th>
       <th scope="row">{{purchase.time_purchased}}</th>
       <th scope="row">{{purchase.time_updated}}</th>
