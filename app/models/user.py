@@ -2,22 +2,23 @@ from flask_login import UserMixin
 from flask import current_app as app
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, id, email, firstname, lastname):
+    def __init__(self, id, email, firstname, lastname, balance, address):
         self.id = id
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
-        self.balance = 0
-        self.address = ""
+        self.balance = balance
+        self.address = address
 
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, id, email, firstname, lastname
+SELECT password, id, email, firstname, lastname, balance, address
 FROM Users
 WHERE email = :email
 """,
@@ -73,8 +74,9 @@ WHERE id = :id
     @staticmethod
     def get_purchase_history(uid):
         rows = app.db.execute('''
-SELECT order_id, seller_id, pid, num_items, price, time_updated
+SELECT order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated, name
 FROM Purchases
+JOIN Products ON Products.id = Purchases.pid
 WHERE order_id IN (
     SELECT id FROM Orders
     WHERE uid = :uid
