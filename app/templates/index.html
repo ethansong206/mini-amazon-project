@@ -1,5 +1,10 @@
 {% extends "base.html" %} {% block content %}
 
+{% if is_seller %}
+<br/>
+<a href="/seller" type="button" class="btn btn-primary">Seller View</a>
+{% endif %}
+
 <br /><br />
 
 <h2>Products for sale:</h2>
