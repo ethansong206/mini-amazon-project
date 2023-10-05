@@ -21,10 +21,11 @@ WHERE id = :id
     @staticmethod
     def get_all_from_seller(seller_id):
         rows = app.db.execute('''
-SELECT seller_id, pid, price, quantity
+SELECT seller_id, pid, price, quantity, name
 FROM Inventory
-WHERE seller_id = :seller_id
+JOIN Products ON Products.id = pid
+WHERE seller_id = :seller_id;
 ''',
                               seller_id=seller_id)
-        return [Inventory(*row) for row in rows]
+        return rows if rows else []
 
