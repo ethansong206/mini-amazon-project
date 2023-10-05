@@ -5,6 +5,7 @@ from faker import Faker
 num_users = 100
 num_products = 2000
 num_purchases = 2500
+num_inventory_items = 3000
 categories = ["Appliances", "Automotive Parts & Accessories", "Beauty & Personal Care", "Books & Media", "Clothing", "Shoes & Jewelry", "Electronics", "Grocery & Gourmet Food", "Health", "Household & Baby Care", "Home & Kitchen", "Sports & Outdoors", "Toys"]
 
 Faker.seed(0)
@@ -91,8 +92,28 @@ def gen_sellers():
                 writer.writerow([uid])
     print(f'{int(num_users / 2)} generated')
 
+def gen_inventories():
+    already_generated = {}
+    with open('Inventories.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Inventories...')
+        for id in range(num_inventory_items):
+            seller_id = gen_random_seller_id()
+            pid = fake.random_int(min=0, max=num_products-1)
+            price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
+            quantity = fake.random_int(min=0, max=1000)
+            # Prevent duplicate seller_id and pid combinations from being generated
+            if seller_id not in already_generated.keys():
+                already_generated[seller_id] = []
+            if pid not in already_generated[seller_id]:
+                already_generated[seller_id].append(pid)
+                writer.writerow([seller_id, pid, price, quantity])
+        print(f'{num_inventory_items} generated')
+    return
+
 gen_users(num_users)
 gen_products(num_products)
 # gen_purchases(num_purchases, available_pids)
 gen_categories()
 gen_sellers()
+gen_inventories()
