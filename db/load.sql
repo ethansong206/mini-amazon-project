@@ -16,3 +16,6 @@ SELECT pg_catalog.setval('public.users_id_seq',
 --                          false);
 
 \COPY Category FROM 'Categories.csv' WITH DELIMITER ',' NULL '' CSV;
+
+\COPY Sellers FROM 'Sellers.csv' WITH DELIMITER ',' NULL '' CSV;
+

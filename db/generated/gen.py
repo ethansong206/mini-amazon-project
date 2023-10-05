@@ -75,7 +75,20 @@ def gen_categories():
             writer.writerow([category])
     print(f'{len(categories)} generated')
 
+def gen_sellers():
+    with open('Sellers.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Sellers...')
+        for uid in range(num_users):
+            if uid % 10 == 0:
+                print(f'{uid}', end=' ', flush=True)
+            # All odd number uids will be sellers
+            if uid % 2 == 1:
+                writer.writerow([uid])
+    print(f'{int(num_users / 2)} generated')
+
 gen_users(num_users)
 available_pids = gen_products(num_products)
 gen_purchases(num_purchases, available_pids)
 gen_categories()
+gen_sellers()
