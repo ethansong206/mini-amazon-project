@@ -34,37 +34,41 @@ def gen_users(num_users):
         print(f'{num_users} generated')
     return
 
+def gen_random_seller_id():
+    seller_id = fake.random_int(min=0, max=num_users-1)
+    # Generated seller ids will be odd
+    if seller_id % 2 == 0:
+        seller_id = seller_id + 1
+    return seller_id
 
 def gen_products(num_products):
-    available_pids = []
     with open('Products.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
         for pid in range(num_products):
             if pid % 100 == 0:
                 print(f'{pid}', end=' ', flush=True)
+            creator_id = gen_random_seller_id()
             name = fake.sentence(nb_words=4)[:-1]
-            price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            available = fake.random_element(elements=('true', 'false'))
-            if available == 'true':
-                available_pids.append(pid)
-            writer.writerow([pid, name, price, available])
-        print(f'{num_products} generated; {len(available_pids)} available')
-    return available_pids
+            category = fake.random_element(elements=categories)
+            description = fake.sentence(nb_words=20)[:-1]
+            writer.writerow([pid, creator_id, name, category, description, ""])
+        print(f'{num_products} generated')
+    return
 
 
 def gen_purchases(num_purchases, available_pids):
-    with open('Purchases.csv', 'w') as f:
-        writer = get_csv_writer(f)
-        print('Purchases...', end=' ', flush=True)
-        for id in range(num_purchases):
-            if id % 100 == 0:
-                print(f'{id}', end=' ', flush=True)
-            uid = fake.random_int(min=0, max=num_users-1)
-            pid = fake.random_element(elements=available_pids)
-            time_purchased = fake.date_time()
-            writer.writerow([id, uid, pid, time_purchased])
-        print(f'{num_purchases} generated')
+    # with open('Purchases.csv', 'w') as f:
+    #     writer = get_csv_writer(f)
+    #     print('Purchases...', end=' ', flush=True)
+    #     for id in range(num_purchases):
+    #         if id % 100 == 0:
+    #             print(f'{id}', end=' ', flush=True)
+    #         uid = fake.random_int(min=0, max=num_users-1)
+    #         pid = fake.random_element(elements=available_pids)
+    #         time_purchased = fake.date_time()
+    #         writer.writerow([id, uid, pid, time_purchased])
+    #     print(f'{num_purchases} generated')
     return
 
 def gen_categories():
@@ -88,7 +92,7 @@ def gen_sellers():
     print(f'{int(num_users / 2)} generated')
 
 gen_users(num_users)
-available_pids = gen_products(num_products)
-gen_purchases(num_purchases, available_pids)
+gen_products(num_products)
+# gen_purchases(num_purchases, available_pids)
 gen_categories()
 gen_sellers()
