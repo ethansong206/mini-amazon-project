@@ -5,7 +5,7 @@ from faker import Faker
 num_users = 100
 num_products = 2000
 num_purchases = 2500
-num_inventory_items = 3000
+num_inventory_items = 1000
 categories = ["Appliances", "Automotive Parts & Accessories", "Beauty & Personal Care", "Books & Media", "Clothing", "Shoes & Jewelry", "Electronics", "Grocery & Gourmet Food", "Health", "Household & Baby Care", "Home & Kitchen", "Sports & Outdoors", "Toys"]
 
 Faker.seed(0)
