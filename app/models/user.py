@@ -2,7 +2,6 @@ from flask_login import UserMixin
 from flask import current_app as app
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 from .. import login
 
 class User(UserMixin):
@@ -83,4 +82,4 @@ WHERE order_id IN (
 ''',
                               uid = uid)
         columns = ['order_id', 'seller_id', 'pid', 'num_items', 'price', 'status', 'time_purchased', 'time_updated', 'name']
-        return Purchase(*(rows[0])) if rows else []
+        return rows if rows else []
