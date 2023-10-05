@@ -13,6 +13,6 @@ FROM Sellers
 WHERE id = :id
 ''',
                               id=id)
-        return Seller(*(rows[0])) if rows is not None else None
+        return Seller(*(rows[0])) if rows else None
 
 
