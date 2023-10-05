@@ -64,7 +64,7 @@ RETURNING id
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-SELECT id, email, firstname, lastname
+SELECT id, email, firstname, lastname, balance, address
 FROM Users
 WHERE id = :id
 """,
