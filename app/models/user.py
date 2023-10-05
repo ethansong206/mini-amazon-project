@@ -83,4 +83,4 @@ WHERE order_id IN (
 )
 ''',
                               uid = uid)
-        return Purchase(*(rows[0])) if rows else None
+        return rows if rows else None

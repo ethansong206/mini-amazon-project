@@ -40,16 +40,16 @@
   </thead>
   <tbody>
     {% for purchase in purchase_history%}
-      <tr>
-        <th scope="row">{{purchase.order_id}}</th>
-        <th scope="row">{{purchase.name}}</th>
-        <th scope="row">{{purchase.seller_id}}</th>
-        <th scope="row">{{purchase.num_items}}</th>
-        <th scope="row">{{purchase.price}}</th>
-        <th scope="row">{{purchase.status}}</th>
-        <th scope="row">{{purchase.time_purchased}}</th>
-        <th scope="row">{{purchase.time_updated}}</th>
-      </tr>
+    <tr>
+      <th scope="row">{{purchase.order_id}}</th>
+      <th scope="row">{{purchase.name}}</th>
+      <th scope="row">{{purchase.seller_id}}</th>
+      <th scope="row">{{purchase.num_items}}</th>
+      <th scope="row">{{purchase.price}}</th>
+      <th scope="row">{{purchase.status}}</th>
+      <th scope="row">{{purchase.time_purchased}}</th>
+      <th scope="row">{{purchase.time_updated}}</th>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
