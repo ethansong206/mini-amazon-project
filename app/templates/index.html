@@ -11,13 +11,63 @@
 <form class="form-inline" action="{{ url_for('product.most_expensive') }}" method="GET">
   <div class="form-group">
     <label for="k">Filter for top</label>
-    <input type="text" class="form-control" id="k" name="k">
+    <input type="number" class="form-control" id="k" name="k" required min="1">
     <label for="category">most expensive items</label>
   </div>
   <button type="submit" class="btn btn-primary">Search</button>
 </form>
 
-<table class='table table-hover table-bordered container'>
+<div class="form-group">
+  <label for="k">Currently showing the <span id="currentKValue"></span><button id="clearKButton" class="btn btn-link" style="display: none;color:red;width:15px;text-align:center;padding:0;">X</button>  most expensive items</label>
+</div>
+
+<script>
+  var kInput = document.getElementById("k");
+  var currentKValue = document.getElementById("currentKValue");
+  var clearKButton = document.getElementById("clearKButton");
+
+  function getQueryParam(name) {
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
+  var kFromURL = getQueryParam("k");
+  if (kFromURL) {
+    kInput.value = kFromURL;
+    currentKValue.textContent = kFromURL;
+    if (parseInt(kFromURL) > 0) {
+      clearKButton.style.display = "inline";
+    }
+  }
+  function clearKValue() {
+    kInput.value = "";
+    clearKButton.style.display = "none";
+    window.location.href = '/';
+  }
+  clearKButton.addEventListener("click", clearKValue);
+</script>
+
+<h5>Products to show per page:</h5>
+<style>
+  label {
+    margin-right: 10px;
+  }
+</style>
+<div>
+  <input type="radio" id="perPage10" name="perPage" value="10" checked />
+  <label for="perPage10">10</label>
+  <input type="radio" id="perPage25" name="perPage" value="25" />
+  <label for="perPage25">25</label>
+  <input type="radio" id="perPage50" name="perPage" value="50" />
+  <label for="perPage50">50</label>
+</div>
+
+<style>
+  tr:nth-child(even) {
+    background-color: #aaaaaa;
+  }
+</style>
+<table id="prodTable" class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Product ID</th>
@@ -25,7 +75,7 @@
       <th scope="col">Price</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody id="prodTableBody">
     {% for product in avail_products%}
     <tr>
       <th scope="row">{{product.id}}</th>
@@ -36,6 +86,100 @@
   </tbody>
 </table>
 
+<style>
+  #pageButtons {
+    display: inline;
+  }
+  #pageButtons button {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  #pageButtons button.current-page {
+    background-color: #888888;
+    color:black;
+    font-weight: bold;
+  }
+</style>
+<div id="pagination">
+  <button id="prevPage" class="btn btn-info"><<</button>
+  <div id="pageButtons"></div>
+  <button id="nextPage" class="btn btn-info">>></button>
+</div>
+
+<script>
+  var kInput = document.getElementById("k");
+  var currentKValue = document.getElementById("currentKValue");
+  var perPageRadios = document.getElementsByName("perPage");
+  var prodTableBody = document.getElementById("prodTableBody");
+  var prevPageButton = document.getElementById("prevPage");
+  var nextPageButton = document.getElementById("nextPage");
+  var pageButtonsContainer = document.getElementById("pageButtons");
+
+  var currentPage = 0;
+  var rowsPerPage = 10;
+
+  function updateTable() {
+    var rows = prodTableBody.getElementsByTagName("tr");
+    var totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    for (var i = 0; i < rows.length; i++) {
+      rows[i].style.display = "none";
+    }
+
+    var startIndex = currentPage * rowsPerPage;
+    for (var i = startIndex; i < startIndex + rowsPerPage; i++) {
+      if (rows[i]) {
+        rows[i].style.display = "";
+      }
+    }
+
+    prevPageButton.disabled = currentPage === 0;
+    nextPageButton.disabled = currentPage === totalPages - 1;
+
+    updatePageButtons(totalPages);
+  }
+
+  function updatePageButtons(totalPages) {
+    pageButtonsContainer.innerHTML = "";
+    for (var i = Math.max(0, currentPage - 2); i < Math.min(totalPages, currentPage + 3); i++) {
+      var button = document.createElement("button");
+      button.textContent = i + 1;
+      button.className = "btn btn-default";
+      button.addEventListener("click", function () {
+        currentPage = parseInt(this.textContent) - 1;
+        updateTable();
+      });
+      if (i === currentPage) {
+        button.className += " current-page";
+      }
+      pageButtonsContainer.appendChild(button);
+    }
+  }
+
+  for (var i = 0; i < perPageRadios.length; i++) {
+    perPageRadios[i].addEventListener("change", function () {
+      rowsPerPage = parseInt(this.value);
+      currentPage = 0;
+      updateTable();
+    });
+  }
+  prevPageButton.addEventListener("click", function () {
+    if (currentPage > 0) {
+      currentPage--;
+      updateTable();
+    }
+  });
+  nextPageButton.addEventListener("click", function () {
+    var rows = prodTableBody.getElementsByTagName("tr");
+    var totalPages = Math.ceil(rows.length / rowsPerPage);
+    if (currentPage < totalPages - 1) {
+      currentPage++;
+      updateTable();
+    }
+  });
+
+  updateTable();
+</script>
 
 <br><br>
 {% if current_user.is_authenticated %}
