@@ -3,6 +3,7 @@ from flask_login import current_user
 import datetime
 from humanize import naturaltime
 
+from .models.inventory import Inventory
 from .models.savedproduct import SavedItem
 from .models.order import Order
 
@@ -30,10 +31,11 @@ def saved_submit_order():
     # where to add check for inventory?
 
     order_id = SavedItem.submit_order(current_user.id, datetime.datetime.now())
+    print('order_id:', order_id)
+
     if order_id == None:
         return redirect(url_for('saved.saved_order_failed'))
-    print('order_id:', order_id)
-    return redirect(url_for('saved.saved_order_complete', orderid=order_id))
+    return redirect(url_for('order.order_get_items', orderid=order_id))
 
 @bp.route('/saved/orderfailed')
 def saved_order_failed():
@@ -56,7 +58,9 @@ def saved_add(pid):
 def saved_updateqty(pid):
     seller_id = request.args.get('sellerid')
     qty = request.form.get('quantity')
-    SavedItem.update_quantity(current_user.id, seller_id, pid, qty)
+    if int(qty) > 0:
+        inventory_item = Inventory.get()
+        SavedItem.update_quantity(current_user.id, seller_id, pid, qty)
     return redirect(url_for('saved.saved'))
 
 @bp.route('/saved/towishlist/<int:pid>', methods=['GET', 'POST'])

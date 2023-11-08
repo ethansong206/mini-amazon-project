@@ -145,6 +145,14 @@ body {
   opacity: 100%;
 }
 
+.table td {
+  vertical-align: middle;
+}
+
+.table th {
+  vertical-align: middle;
+}
+
 #update-qty {
   display: flex;
   width: 100%;

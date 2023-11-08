@@ -59,6 +59,7 @@ class SavedItem:
         try:
 
             # CHECK IF ENOUGH INVENTORY BEFORE SUBMITTING
+            # ALSO CHECK IF ENOUGH BALANCE
 
             # record uid, status, time_purchased, timestamp, total_price
             # insert into Order and return id
@@ -105,6 +106,9 @@ class SavedItem:
 
                 if qty < item.num_items:
                     return
+
+                # check if enough balance
+                
 
                 # delete item from inventory
                 deleted = app.db.execute('''

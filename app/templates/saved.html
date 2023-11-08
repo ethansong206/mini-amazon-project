@@ -38,8 +38,8 @@
                         <button class="cart-update" type="submit">update</button>
                     </form>
                 </td>
-                <td>$ {{item.price}}</td>
-                <td>{{humanize_time(item.time_added)}}</td>
+                <td class="cart-data">$ {{item.price}}</td>
+                <td class="cart-data">{{humanize_time(item.time_added)}}</td>
                 <td>
                     <form action="{{ url_for('saved.saved_to_wishlist', pid=item.pid, sellerid=item.seller_id) }}" method="POST">
                         <button class="cart-update" type="submit">move to wishlist</button>
