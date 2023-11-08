@@ -9,6 +9,7 @@ num_inventory_items = 1000
 num_orders = 500
 num_saved_items = 500
 categories = ["Appliances", "Automotive Parts & Accessories", "Beauty & Personal Care", "Books & Media", "Clothing", "Shoes & Jewelry", "Electronics", "Grocery & Gourmet Food", "Health", "Household & Baby Care", "Home & Kitchen", "Sports & Outdoors", "Toys"]
+generated_inventories = []
 
 Faker.seed(0)
 fake = Faker()
@@ -74,21 +75,29 @@ def gen_orders(num_orders):
         return
 
 def gen_saved_items(num_saved_items):
-    with open('Saved_items.csv', 'w') as f:
+    with open('SavedItems.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Saved Items...', end=' ', flush=True)
+        already_generated = {}
         for id in range(num_saved_items):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
-            seller_id = gen_random_seller_id()
-            if uid == seller_id:
-                uid = (uid + 1) % num_users
-            pid = fake.random_int(min=0, max=num_products)
-            num_items = fake.random_int(min=1, max=10)
+            inventory_index = fake.random_int(min=0, max=len(generated_inventories)-1)
+            seller_id = generated_inventories[inventory_index][0]
+            pid = generated_inventories[inventory_index][1]
+            num_items = fake.random_int(min=1, max=generated_inventories[inventory_index][3])
             in_cart = fake.random_element(elements=[True, False])
-            time_added = fake.date_time()            
-            writer.writerow([uid, seller_id, pid, num_items, in_cart, time_added])
+            time_added = fake.date_time()
+            if (uid not in already_generated):   
+                already_generated[uid] = []
+            is_in_list = False
+            for t in already_generated[uid]:
+                if t == (seller_id, pid):   
+                    is_in_list = True     
+            if not is_in_list: 
+                writer.writerow([uid, seller_id, pid, num_items, in_cart, time_added])
+                already_generated[uid].append((seller_id, pid))
         print(f'{num_saved_items} generated')
     return
 
@@ -146,6 +155,7 @@ def gen_inventories():
                 already_generated[seller_id] = []
             if pid not in already_generated[seller_id]:
                 already_generated[seller_id].append(pid)
+                generated_inventories.append([seller_id, pid, price, quantity])
                 writer.writerow([seller_id, pid, price, quantity])
         print(f'{num_inventory_items} generated')
     return
