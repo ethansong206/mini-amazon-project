@@ -3,17 +3,21 @@ from flask import current_app as app
 from .purchase import Purchase
 
 class Order:
-    def __init__(self, id, uid, status, timestamp):
+    def __init__(self, id, uid, status, time_purchased, timestamp, total_price):
         self.id = id
         self.uid = uid
         self.status = status
+        self.time_purchased = time_purchased
         self.timestamp = timestamp
+        self.total = total_price
 
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-        SELECT id, uid, status, timestamp
-        FROM Orders
+        SELECT O.id, O.uid, O.status, O.timestamp, P.time_purchased
+        FROM Orders O
+        JOIN Purchases P
+        ON O.id = P.order_id
         WHERE id = :id
         ''', id=id)
 
@@ -22,9 +26,13 @@ class Order:
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
-        SELECT id, uid, status, timestamp
-        FROM Orders
+        SELECT O.id, O.uid, O.status, O.timestamp, P.time_purchased, SUM(P.price) AS total_price
+        FROM Orders O
+        JOIN Purchases P
+        ON O.id = P.order_id
         WHERE uid = :uid
+        GROUP BY O.id, P.time_purchased
+
         ''', uid=uid)
 
         return [Order(*row) for row in rows]
