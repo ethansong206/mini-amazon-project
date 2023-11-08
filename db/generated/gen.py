@@ -68,9 +68,8 @@ def gen_orders(num_orders):
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
             status = fake.random_element(elements=["Pending", "On Hold", "Fulfilled"])
-            time_ordered = fake.date_time()
-            time_updated = fake.date_time()
-            writer.writerow([id, uid, status, time_ordered, time_updated])
+            timestamp = fake.date_time()
+            writer.writerow([id, uid, status, timestamp])
         print(f'{num_orders} generated')
         return
 
