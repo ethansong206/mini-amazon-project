@@ -4,6 +4,7 @@ import datetime
 from humanize import naturaltime
 
 from .models.savedproduct import SavedItem
+from .models.order import Order
 
 from flask import Blueprint
 bp = Blueprint('saved', __name__)
@@ -23,6 +24,20 @@ def saved():
                                 wish_items=wish_items,
                                 humanize_time=humanize_time)
     return redirect('/')
+
+@bp.route('/saved/submitorder', methods=['POST'])
+def saved_submit_order():
+    # where to add check for inventory?
+
+    order_id = SavedItem.submit_order(current_user.id, datetime.datetime.now())
+    print('order_id:', order_id)
+    return redirect(url_for('saved.saved_order_complete', orderid=order_id))
+
+@bp.route('/saved/ordercomplete/<int:orderid>')
+def saved_order_complete(orderid):
+    order = Order.get(orderid)
+    return render_template('ordercomplete.html',
+    order=order)
 
 @bp.route('/saved/add/<int:pid>', methods=['POST'])
 def saved_add(pid):

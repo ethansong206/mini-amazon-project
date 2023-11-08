@@ -1,6 +1,8 @@
 from flask import current_app as app
 
 from .inventory import Inventory
+from .order import Order
+from .purchase import Purchase
 
 class SavedItem:
     def __init__(self, uid, seller_id, pid, num_items, in_cart, time_added):
@@ -51,6 +53,51 @@ class SavedItem:
         ''',
         uid=uid)
         return rows if rows else []
+
+    @staticmethod
+    def submit_order(uid, time_purchased):
+        try:
+
+            # CHECK IF ENOUGH INVENTORY BEFORE SUBMITTING
+
+            # record uid, status, time_purchased, timestamp, total_price
+            # insert into Order and return id
+            # insert each product into Purchases with new order id
+            # remove the products from saveditems and from inventory
+            items = app.db.execute('''
+            SELECT *
+            FROM SavedItems
+            WHERE uid=:uid
+            AND in_cart
+            ''',
+            uid=uid
+            )
+
+            order = app.db.execute('''
+            INSERT INTO Orders(uid, status, timestamp)
+            VALUES(:uid, :status, :timestamp)
+            RETURNING id
+            ''',
+            uid=uid,
+            status='Pending',
+            timestamp=time_purchased)
+
+            orderid = order[0][0]
+            print(Purchase(*items))
+
+            # for item in items:
+            #     rows = app.db.execute('''
+            #     INSERT INTO Purchases(order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated),
+            #     VALUES(:order_id, :seller_id, :pid, :num_items, :price, :status, :time_purchased, :time_updated)
+            #     ''',
+            #     order_id=orderid,
+            #     seller_id=)
+            return orderid
+            
+        except Exception as e:
+            print(e)
+            print('error')
+            return None
 
     @staticmethod
     def add_to_cart(uid, seller_id, pid, num_items, time_added):

@@ -9,7 +9,7 @@
 
     <div class="cart-header">
         <h2>Cart</h2>
-        <form action="" method="POST">
+        <form action="{{ url_for('saved.saved_submit_order') }}" method="POST">
             <button type="submit"
                 class="cart-submit">submit order</button>
         </form>
@@ -29,13 +29,13 @@
             {% for item in cart_items %}
             <tr class="saved-row">
                 <th scope="row">{{item.pid}}</th>
-                <td id="update-qty">
+                <td class="" id="update-qty">
                     {{item.num_items}}
                     <form action="{{ url_for('saved.saved_updateqty', pid=item.pid, sellerid=item.seller_id) }}" 
                         method="POST"
                         class="qty">
                         <input type="number" id="quantity" name="quantity">
-                        <button type="submit">update</button>
+                        <button class="cart-update" type="submit">update</button>
                     </form>
                 </td>
                 <td>$ {{item.price}}</td>
