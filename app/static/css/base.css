@@ -1,12 +1,15 @@
 :root {
   --royal-blue: #00539B;
+  --royal-blue-hover: #02427a;
   --navy-blue: #012169;
   --light-green: #A2C5AC;
   --light-green-hover: #b2cfba;
   --light-gray: #D3D5D4;
   --light-gray-hover: #b3b5b4;
   --ash-gray: #9DB5B2;
+  --ash-gray-hover: #8ba3a0;
   --red: #ED254E;
+  --red-hover: #bf1336;
 }
 
 section {
@@ -98,10 +101,62 @@ button {
   width: 3rem;
 }
 
+/* PRODUCT DETAILS */
+
+.product-view {
+  padding: 0 2rem;
+}
+
+.seller-box {
+  width: 35%;
+  float: right;
+  background-color: var(--light-gray);
+  padding: 1rem;
+}
+
+.seller-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  vertical-align: middle;
+  height: 3rem;
+}
+
+.seller-list span {
+  vertical-align: middle;
+  align-self: center;
+}
+
+.seller-list form {
+  vertical-align: middle;
+  align-self: center;
+}
+
+.seller-list button {
+  background-color: var(--light-green);
+  color: white;
+  padding: .1rem 1rem;
+}
+
+.seller-list button:hover {
+  background-color: var(--light-green-hover);
+  cursor: pointer;
+}
+
 /* CART */
 
 .saved {
   width: screen;
+}
+
+.saved a {
+  text-decoration: underline;
+  color: var(--royal-blue);
+}
+
+.saved a:hover {
+  color: var(--royal-blue-hover);
 }
 
 .saved button {
@@ -144,11 +199,32 @@ button {
   width: 15%;
   display: flex;
   flex-direction: column;
+  height: fit-content;
+  /* max-height: 12rem; */
+  gap: .5rem;
+  /* justify-content: space-between; */
+}
+
+.line-total {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ash-gray);
+  padding: .25rem 0;
+}
+
+@media only screen and (max-width: 1200px) {
+  .cart-body {
+    flex-direction: column;
+  }
+
+  .cart-left, .cart-right {
+    width: 100%;
+  }
 }
 
 .cart-right form {
-  margin: auto;
   text-align: center;
+  padding: 1rem 0 0 0;
 }
 
 .cart-submit {
@@ -173,13 +249,14 @@ button {
 }
 
 .cart-remove button {
-  background-color: var(--red);
-  opacity: 80%;
-  color: white;
+  color: var(--red);
+  text-transform: lowercase;
+  background-color: white;
+
 }
 
 .cart-remove button:hover {
-  opacity: 100%;
+  color: var(--red-hover);
 }
 
 .table td {
@@ -190,15 +267,156 @@ button {
   vertical-align: middle;
 }
 
+.item-unavailable th {
+  text-decoration: line-through;
+  font-weight: normal;
+}
+
+.item-unavailable td {
+  text-align: center;
+}
+
+.fixed-col {
+  width: 12rem;
+  margin: auto;
+  text-align: center;
+}
+
+.fixed-col form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.last-col {
+  width: 4rem;
+}
+
 #update-qty {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  gap: 1rem;
   align-items: center;
+  text-align: center;
 }
 
 #quantity {
+  text-align: center;
   width: 4rem;
+  background-color: #eee;
+  border: none;
+}
+
+#edit-balance {
+  color: gray;
+  font-size: .8rem;
+  text-decoration: none;
+}
+
+#edit-balance:hover {
+  text-decoration: underline;
+}
+
+/* CHECKOUT */
+
+.back-container {
+  padding: 2rem .5rem;
+}
+
+.back-to-cart {
+  background-color: var(--ash-gray);
+  padding: .5rem 1rem;
+  color: white;
+  border-radius: 5px;
+  transition: all;
+  transition-duration: 200ms;
+}
+
+.back-to-cart:hover {
+  cursor: pointer;
+  background-color: var(--ash-gray-hover);
+  color: white;
+  text-decoration: none;
+}
+
+.checkout {
+  width: 95%;
+  margin: auto;
+  background-color: #eee;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.checkout table {
+  width: 100%;
+}
+
+.item-price-cell {
+  display: flex;
+  gap: 1rem;
+  padding: 0 2rem;
+  text-align: right;
+  float: right;
+}
+
+.item-price-cell #totalprice {
+  width: 5rem;
+}
+
+.checkout-total th {
+  font-size: 1.3rem;
+  padding: 2rem 0;
+}
+
+.checkout-total td {
+  font-size: 1.3rem;
+  padding: 2rem;
+}
+
+.balance {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.checkout .balance .edit-balance {
+  font-size: 1rem;
+  text-decoration: none;
+  color: gray;
+  padding: 0 .5rem;
+  transition: all;
+  transition-duration: 200ms;
+}
+
+.checkout .balance .edit-balance:hover {
+  color: black;
+  cursor: pointer;
+}
+
+.place-order {
+  display: flex;
+  justify-content: center;
+}
+
+.place-order button {
+  text-transform: uppercase;
+  background-color: var(--ash-gray);
+  padding: .5rem 2rem;
+  font-size: 1.5rem;
+  transition: all;
+  transition-duration: 200ms;
+}
+
+.place-order #invalid-balance {
+  opacity: 50%;
+}
+
+.place-order #valid-balance:hover {
+  cursor: pointer;
+  background-color: var(--ash-gray-hover);
 }
 
 /* ORDERS */

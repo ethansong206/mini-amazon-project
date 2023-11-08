@@ -49,10 +49,10 @@ LIMIT :k
     @staticmethod
     def get_all_sellers(id):
         rows = app.db.execute('''
-SELECT DISTINCT(creator_id)
-FROM Products
-WHERE id = :id
+SELECT *
+FROM Inventory AS I
+WHERE pid = :id
 ''',
                               id=id)
-        sellers = [row.creator_id for row in rows]
-        return sellers
+        # sellers = [row.creator_id for row in rows]
+        return rows if rows else []
