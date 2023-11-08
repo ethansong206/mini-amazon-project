@@ -18,6 +18,7 @@
                             <th scope="col">Product Name</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Unit Price</th>
+                            <th scope="col">Total Price</th>
                             <!-- <th scope="col">Time Added</th> -->
                             <th class="fixed-col" scope="col"></th>
                             <th class="last-col" scope="col"></th>
@@ -39,14 +40,15 @@
                                         method="POST"
                                         class="qty">
                                         <input type="number" id="quantity" name="quantity" value="{{item.num_items}}">
-                                        <button class="cart-update" type="submit">update</button>
+                                        <button id="qty-update" type="submit">&check;</button>
                                     </form>
                                 </td>
                                 <td class="cart-data">$ {{item.price}}</td>
+                                <td>$ {{item.totalprice}}</td>
                                 <!-- <td class="cart-data">{{humanize_time(item.time_added)}}</td> -->
                                 <td class="fixed-col" >
                                     <form action="{{ url_for('saved.saved_to_wishlist', pid=item.pid, sellerid=item.seller_id) }}" method="POST">
-                                        <button class="cart-update" type="submit">move to wishlist</button>
+                                        <button class="cart-update" type="submit">save for later</button>
                                     </form>
                                 </td>
                                 <td class="cart-remove">
@@ -59,7 +61,7 @@
                             {% if item.price == None %}
                             <tr class="saved-row item-unavailable">
                                 <th scope="row">{{item.name}}</th>
-                                <td class="unavailable-message" colspan="2">Sorry, this item is no longer available.
+                                <td class="unavailable-message" colspan="3">Sorry, this item is no longer available.
 
                                 </td>
                                 <td>
@@ -75,7 +77,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            <h2>Wishlist</h2>
+            <h2>Saved for Later</h2>
             <table class="table">
                 <thead class="">
                     <tr>
