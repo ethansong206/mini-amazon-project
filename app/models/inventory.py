@@ -9,13 +9,15 @@ class Inventory:
         self.quantity = quantity
 
     @staticmethod
-    def get(id):
+    def get(pid, seller_id):
         rows = app.db.execute('''
 SELECT seller_id, pid, price, quantity
 FROM Inventory
-WHERE id = :id
+WHERE pid = :pid
+AND seller_id = :seller_id
 ''',
-                              id=id)
+                              id=id,
+                              seller_id=seller_id)
         return Inventory(*(rows[0])) if rows is not None else None
 
     @staticmethod
