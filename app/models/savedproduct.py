@@ -83,15 +83,68 @@ class SavedItem:
             timestamp=time_purchased)
 
             orderid = order[0][0]
-            print(Purchase(*items))
 
-            # for item in items:
-            #     rows = app.db.execute('''
-            #     INSERT INTO Purchases(order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated),
-            #     VALUES(:order_id, :seller_id, :pid, :num_items, :price, :status, :time_purchased, :time_updated)
-            #     ''',
-            #     order_id=orderid,
-            #     seller_id=)
+            for item in items:
+                # get item price
+                inventory_item = app.db.execute('''
+                SELECT price, quantity
+                FROM Inventory
+                WHERE pid=:pid
+                AND seller_id=:seller_id
+                ''',
+                pid=item.pid,
+                seller_id=item.seller_id)
+
+                if len(inventory_item) == 0:
+                    return
+
+                print(inventory_item)
+
+                priceperitem = inventory_item[0][0]
+                qty = inventory_item[0][1]
+
+                if qty < item.num_items:
+                    return
+
+                # delete item from inventory
+                deleted = app.db.execute('''
+                UPDATE Inventory
+                SET quantity = quantity - :qty
+                WHERE pid = :pid
+                AND seller_id = :seller_id
+                ''',
+                pid=item.pid,
+                seller_id=item.seller_id,
+                qty=item.num_items)
+
+                # delete item from saveditems
+
+                deleted = app.db.execute('''
+                DELETE FROM SavedItems
+                WHERE pid=:pid
+                AND seller_id=:seller_id
+                AND uid=:uid
+                ''',
+                uid=uid,
+                pid=item.pid,
+                seller_id=item.seller_id,
+                qty=item.num_items)
+
+                # add item to purchases
+
+                purchase = app.db.execute('''
+                INSERT INTO Purchases(order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated)
+                VALUES(:order_id, :seller_id, :pid, :num_items, :price, :status, :time_purchased, :time_updated)
+                ''',
+                order_id=orderid,
+                seller_id=item.seller_id,
+                pid=item.pid,
+                num_items=item.num_items,
+                price=priceperitem)
+                print(item.uid)
+
+            
+
             return orderid
             
         except Exception as e:
@@ -138,7 +191,7 @@ class SavedItem:
             return SavedItem.get(uid, seller_id, pid)
         except Exception as e:
             print(e)
-            print('excpetion')
+            print('exception')
             return None
 
     def move_to_wishlist(uid, seller_id, pid, time_added):
@@ -204,3 +257,4 @@ class SavedItem:
         except Exception as e:
             print(e)
             return None
+

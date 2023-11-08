@@ -30,14 +30,22 @@ def saved_submit_order():
     # where to add check for inventory?
 
     order_id = SavedItem.submit_order(current_user.id, datetime.datetime.now())
+    if order_id == None:
+        return redirect(url_for('saved.saved_order_failed'))
     print('order_id:', order_id)
     return redirect(url_for('saved.saved_order_complete', orderid=order_id))
+
+@bp.route('/saved/orderfailed')
+def saved_order_failed():
+    return render_template('orderfailed.html')
 
 @bp.route('/saved/ordercomplete/<int:orderid>')
 def saved_order_complete(orderid):
     order = Order.get(orderid)
+    purchases = Order.get_order_items(orderid)
     return render_template('ordercomplete.html',
-    order=order)
+    order=order,
+    purchases=purchases)
 
 @bp.route('/saved/add/<int:pid>', methods=['POST'])
 def saved_add(pid):
