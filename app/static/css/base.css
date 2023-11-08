@@ -2,6 +2,7 @@
   --royal-blue: #00539B;
   --royal-blue-hover: #02427a;
   --navy-blue: #012169;
+  --dark-green: #2a3d3a;
   --light-green: #A2C5AC;
   --light-green-hover: #b2cfba;
   --light-gray: #D3D5D4;
@@ -10,6 +11,12 @@
   --ash-gray-hover: #8ba3a0;
   --red: #ED254E;
   --red-hover: #bf1336;
+  --green-tint: #dfedeb;
+  --green-tint-hover:#d1dedc;
+  --red-tint:#f5e4e7;
+  --red-tint-hover: #edd1d6;
+  --yellow-tint: #faf7e8;
+  --yellow-tint-hover: #faf2cf;
 }
 
 section {
@@ -56,6 +63,7 @@ button {
 
 .main {
   padding: 0px 10px;
+  padding-bottom: 2rem;
 }
 
 .login-main-text {
@@ -110,6 +118,54 @@ button {
 
 .filter-criteria #k {
   width: 3rem;
+}
+
+#recent-table {
+  padding: 1rem;
+}
+
+#recent-table th {
+  padding: 1rem;
+}
+
+.purchase-pending, .purchase-fulfilled, .purchase-on-hold {
+  transition: all;
+  transition-duration: 50ms;
+}
+
+.purchase-pending {
+  background-color: var(--yellow-tint);
+}
+
+.purchase-pending:hover {
+  background-color: var(--yellow-tint-hover);
+}
+
+.purchase-fulfilled {
+  background-color: var(--green-tint);
+  color: var(--dark-green);
+}
+
+.purchase-fulfilled:hover {
+  background-color: var(--green-tint-hover);
+}
+
+.purchase-on-hold {
+  background-color: var(--red-tint);
+}
+
+.purchase-on-hold:hover {
+  background-color: var(--red-tint-hover);
+}
+
+.order-link {
+  color: var(--royal-blue);
+  text-decoration: underline;
+  font-weight: lighter !important;
+}
+
+.order-link:hover {
+  font-weight: bolder !important;
 }
 
 /* PRODUCT DETAILS */
