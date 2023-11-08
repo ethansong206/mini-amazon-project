@@ -157,7 +157,6 @@
       </thead>
       <tbody>
         {% for purchase in purchase_history%}
-        {% if purchase.status == "On Hold" %}
         <tr>
           <th scope="row">
             <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-link">
@@ -168,55 +167,30 @@
             <th scope="row">{{purchase.seller_id}}</th>
             <th scope="row">{{purchase.num_items}}</th>
             <th scope="row">${{purchase.price}}</th>
+            {% if purchase.status == "On Hold" %}
             <th scope="row" class="purchase-on-hold order-status-link">
               <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-status-link">
                 {{purchase.status}}
                </a>
             </th>
-            <th scope="row">{{purchase.time_purchased}}</th>
-            <th scope="row">{{purchase.time_updated}}</th>
-        </tr> 
-        {% endif %}
-        {% if purchase.status == "Pending" %}
-          <tr>
-            <th scope="row">
-              <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-link">
-               {{purchase.order_id}}
-              </a>
-            </th>
-              <th scope="row">{{purchase.name}}</th>
-              <th scope="row">{{purchase.seller_id}}</th>
-              <th scope="row">{{purchase.num_items}}</th>
-              <th scope="row">${{purchase.price}}</th>
+            {% endif %}
+            {% if purchase.status == "Pending" %}
               <th scope="row" class="purchase-pending order-status-link">
                 <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-status-link">
                   {{purchase.status}}
                  </a>
               </th>
-              <th scope="row">{{purchase.time_purchased}}</th>
-              <th scope="row">{{purchase.time_updated}}</th>
-          </tr> 
-        {% endif %}
-        {% if purchase.status == "Fulfilled" %}
-          <tr>
-            <th scope="row">
-              <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-link">
-               {{purchase.order_id}}
-              </a>
-            </th>
-              <th scope="row">{{purchase.name}}</th>
-              <th scope="row">{{purchase.seller_id}}</th>
-              <th scope="row">{{purchase.num_items}}</th>
-              <th scope="row">${{purchase.price}}</th>
+            {% endif %}
+            {% if purchase.status == "Fulfilled" %}
               <th scope="row" class="purchase-fulfilled order-status-link">
                 <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-status-link">
                   {{purchase.status}}
                  </a>
               </th>
+              {% endif %}
               <th scope="row">{{purchase.time_purchased}}</th>
               <th scope="row">{{purchase.time_updated}}</th>
           </tr> 
-        {% endif %}
         {% endfor %}
       </tbody>
     </table>  
