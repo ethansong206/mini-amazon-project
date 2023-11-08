@@ -22,13 +22,18 @@
             <th scope="row">{{item.pid}}</th>
             <td id="update-qty">
                 {{item.num_items}}
-                <form action="{{ url_for('saved.saved_updateqty', pid=item.pid) }}" method="POST">
-                    <input type="number">
+                <form action="{{ url_for('saved.saved_updateqty', pid=item.pid, sellerid=item.seller_id) }}" method="POST">
+                    <input type="number" id="quantity" name="quantity">
                     <button type="submit">update</button>
                 </form>
             </td>
-            <td>${{item.price}}</td>
+            <!-- <td>${{item.price}}</td> -->
             <td>{{item.time_added}}</td>
+            <td>
+                <form action="{{ url_for('saved.saved_to_wishlist', pid=item.pid, sellerid=item.seller_id) }}" method="POST">
+                    <button type="submit">move to wishlist</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </tbody>

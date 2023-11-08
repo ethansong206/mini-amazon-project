@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from flask_login import current_user
 import datetime
 
@@ -26,14 +26,22 @@ def saved_add(pid):
 
 @bp.route('/saved/update/<int:pid>', methods=['GET', 'POST'])
 def saved_updateqty(pid):
-    SavedItem.update_quantity(pid)
+    seller_id = request.args.get('sellerid')
+    qty = request.form.get('quantity')
+    SavedItem.update_quantity(current_user.id, seller_id, pid, qty)
+    return redirect(url_for('saved.saved'))
 
-# @bp.route('/saved/towishlist/<int:pid>', methods=['GET', 'POST'])
-# def saved_to_wishlist(pid):
-#     SavedItem.to_wishlist(current_user.id, pid, datetime.datetime.now())
-#     return redirect(url_for('saved.saved'))
+@bp.route('/saved/towishlist/<int:pid>', methods=['GET', 'POST'])
+def saved_to_wishlist(pid):
+    seller_id = request.args.get('sellerid')
+    print(current_user.id)
+    print(pid)
+    print(datetime.datetime.now())
+    SavedItem.move_to_wishlist(current_user.id, seller_id, pid, datetime.datetime.now())
+    return redirect(url_for('saved.saved'))
 
-# @bp.route('/saved/tocart/<int:pid>', methods=['GET', 'POST'])
-# def saved_to_cart(pid):
-#     SavedItem.to_cart(current_user.id, pid, datetime.datetime.now())
-#     return redirect(url_for('saved.saved'))
+@bp.route('/saved/tocart/<int:pid>', methods=['GET', 'POST'])
+def saved_to_cart(pid):
+    seller_id = request.args.get('sellerid')
+    SavedItem.move_to_cart(current_user.id, seller_id, pid, datetime.datetime.now())
+    return redirect(url_for('saved.saved'))
