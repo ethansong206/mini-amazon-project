@@ -24,6 +24,7 @@
             <span id="user-welcome">Hello {{current_user.firstname}}!</span>
             <a href="{{ url_for('saved.saved') }}" type="button" class="btn btn-light">View cart</a>
             <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+            <a href="{{ url_for('users.info') }}" type="button" class="btn btn-light">Account info</a>
           {% else %}
             <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">log in</a>
           {% endif %}

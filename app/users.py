@@ -77,3 +77,51 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+@bp.route('/info')
+def info():
+    if current_user.is_authenticated:
+        return render_template('info.html', user=User.get(current_user.id))
+    else:
+        return redirect(url_for('index.index'))
+
+@bp.route('/info/updatefirstname', methods=['POST'])
+def update_first():
+    id = current_user.id
+    firstname = request.form.get('firstname')
+    if not firstname == '':
+        User.update_firstname(id, firstname)
+    return redirect(url_for('users.info'))
+
+@bp.route('/info/updatelastname', methods=['POST'])
+def update_last():
+    id = current_user.id
+    lastname = request.form.get('lastname')
+    if not lastname == '':
+        User.update_lastname(id, lastname)
+    return redirect(url_for('users.info'))
+
+@bp.route('/info/updateaddress', methods=['POST'])
+def update_address():
+    id = current_user.id
+    address = request.form.get('address')
+    if not address == '':
+        User.update_address(id, address)
+    return redirect(url_for('users.info'))
+
+@bp.route('/info/updateemail', methods=['POST'])
+def update_email():
+    id = current_user.id
+    email = request.form.get('email')
+    if not email == '':
+        User.update_email(id, email)
+    return redirect(url_for('users.info'))
+
+@bp.route('/info/updatebalance', methods=['POST'])
+def update_balance():
+    id = current_user.id
+    balance = request.form.get('balance')
+    if not balance == '':
+        User.update_balance(id, balance)
+    return redirect(url_for('users.info'))
+    
