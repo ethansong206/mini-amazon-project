@@ -20,9 +20,11 @@ def saved():
     if current_user.is_authenticated:
         cart_items = SavedItem.get_all_cart_by_uid(current_user.id)
         wish_items = SavedItem.get_all_wishlist_by_uid(current_user.id)
+        # subtotal = SavedItem.get_cart_subtotal(current_user.id)
         return render_template('saved.html',
                                 cart_items=cart_items,
                                 wish_items=wish_items,
+                                # subtotal=subtotal,
                                 humanize_time=humanize_time)
     return redirect('/')
 
