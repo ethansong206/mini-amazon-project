@@ -68,7 +68,7 @@ class SavedItem:
     @staticmethod
     def get_all_cart_by_uid(uid):
         rows = app.db.execute('''
-        SELECT S.uid, S.seller_id, P.name, S.pid, S.num_items, S.time_added, I.price
+        SELECT S.uid, S.seller_id, P.name, S.pid, S.num_items, S.time_added, I.price, S.num_items * I.price AS totalprice
         FROM SavedItems S
         LEFT JOIN Products P
         ON S.pid = P.id
