@@ -37,8 +37,13 @@ class SavedItem:
     @staticmethod
     def get_all_cart_by_uid(uid):
         rows = app.db.execute('''
-        SELECT uid, seller_id, pid, num_items, time_added
-        FROM SavedItems
+        SELECT S.uid, S.seller_id, P.name, S.pid, S.num_items, S.time_added, I.price
+        FROM SavedItems S
+        LEFT JOIN Products P
+        ON S.pid = P.id
+        LEFT JOIN Inventory I
+        ON S.pid = I.pid
+        AND S.seller_id = I.seller_id
         WHERE uid = :uid
         AND in_cart
         ORDER BY time_added DESC
@@ -49,8 +54,13 @@ class SavedItem:
     @staticmethod
     def get_all_wishlist_by_uid(uid):
         rows = app.db.execute('''
-        SELECT uid, seller_id, pid, num_items, time_added
-        FROM SavedItems
+        SELECT S.uid, S.seller_id, P.name, S.pid, S.num_items, S.time_added, I.price
+        FROM SavedItems S
+        LEFT JOIN Products P
+        ON S.pid = P.id
+        LEFT JOIN Inventory I
+        ON S.pid = I.pid
+        AND S.seller_id = I.seller_id
         WHERE uid = :uid
         AND NOT in_cart
         ORDER BY time_added DESC
@@ -165,7 +175,7 @@ class SavedItem:
         try:
             rows = app.db.execute('''
             INSERT INTO SavedItems(uid, seller_id, pid, num_items, in_cart, time_added)
-            VALUES(:uid, :sid, :pid, num_items, :in_cart, :time_added)
+            VALUES(:uid, :sid, :pid, :num_items, :in_cart, :time_added)
             ''',
             uid=uid,
             sid=seller_id,
@@ -176,6 +186,8 @@ class SavedItem:
             )
             return SavedItem.get(uid, seller_id, pid)
         except Exception as e:
+            print('error')
+            print(e)
             return None
 
     def move_to_cart(uid, seller_id, pid, time_added):

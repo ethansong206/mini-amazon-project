@@ -1,5 +1,6 @@
 :root {
   --royal-blue: #00539B;
+  --royal-blue-hover: #02427a;
   --navy-blue: #012169;
   --light-green: #A2C5AC;
   --light-green-hover: #b2cfba;
@@ -7,6 +8,7 @@
   --light-gray-hover: #b3b5b4;
   --ash-gray: #9DB5B2;
   --red: #ED254E;
+  --red-hover: #bf1336;
 }
 
 section {
@@ -98,10 +100,62 @@ button {
   width: 3rem;
 }
 
+/* PRODUCT DETAILS */
+
+.product-view {
+  padding: 0 2rem;
+}
+
+.seller-box {
+  width: 35%;
+  float: right;
+  background-color: var(--light-gray);
+  padding: 1rem;
+}
+
+.seller-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  vertical-align: middle;
+  height: 3rem;
+}
+
+.seller-list span {
+  vertical-align: middle;
+  align-self: center;
+}
+
+.seller-list form {
+  vertical-align: middle;
+  align-self: center;
+}
+
+.seller-list button {
+  background-color: var(--light-green);
+  color: white;
+  padding: .1rem 1rem;
+}
+
+.seller-list button:hover {
+  background-color: var(--light-green-hover);
+  cursor: pointer;
+}
+
 /* CART */
 
 .saved {
   width: screen;
+}
+
+.saved a {
+  text-decoration: underline;
+  color: var(--royal-blue);
+}
+
+.saved a:hover {
+  color: var(--royal-blue-hover);
 }
 
 .saved button {
@@ -173,13 +227,14 @@ button {
 }
 
 .cart-remove button {
-  background-color: var(--red);
-  opacity: 80%;
-  color: white;
+  color: var(--red);
+  text-transform: lowercase;
+  background-color: white;
+
 }
 
 .cart-remove button:hover {
-  opacity: 100%;
+  color: var(--red-hover);
 }
 
 .table td {
@@ -188,6 +243,14 @@ button {
 
 .table th {
   vertical-align: middle;
+}
+
+.item-unavailable th {
+  text-decoration: line-through;
+}
+
+.item-unavailable th {
+  font-weight: normal;
 }
 
 #update-qty {

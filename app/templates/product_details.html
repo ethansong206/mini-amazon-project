@@ -4,33 +4,37 @@
 
 <br><br>
 
-<h2>Product: {{ product.name }}</h2>
-<section style="text-align: left; float: left;color: black;width: 80%;">
-    <h4 style="display: inline">Description: </h4>
-    <p style="display: inline">{{ product.description }}</p>
-</section>
-<style>
-    aside {
-      width: 20%;
-      float: right;
-      font-style: italic;
-      background-color: lightgray;
-    }
-    </style>
-<aside>
-    <h4>Sellers:</h4>
-</aside>
-
-<br><br>
-<br><br>
-
-<div>
-    <h5 style="display: inline;">Category: </h5>
-    <p style="display: inline;">{{ product.category }}</p>
+<div class="product-view">
+    <h2>Product: {{ product.name }}</h2>
+    <section style="text-align: left; float: left;color: black;width: 60%;">
+        <h4 style="display: inline">Description: </h4>
+        <p style="display: inline">{{ product.description }}</p>
+    </section>
+    <div class="seller-box">
+        <h4>Sellers:</h4>
+        {% for seller in sellers %}
+        <div class="seller-list">
+            <span>${{seller.price}}</span>
+            <span>In stock: {{seller.quantity}}</span>
+            <form action="{{ url_for('product.product_add_to_cart', product_id=product.pid, seller_id=seller.seller_id)}}" method="POST">
+                <button>add to cart</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <br><br>
+    <br><br>
+    
+    <div>
+        <h5 style="display: inline;">Category: </h5>
+        <p style="display: inline;">{{ product.category }}</p>
+    </div>
+    
+    <div style="color:black;">
+        <img src=product.image>
+    </div>
 </div>
 
-<div style="color:black;">
-    <img src=product.image>
-</div>
 
 {% endblock %}
