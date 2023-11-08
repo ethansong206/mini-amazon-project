@@ -7,87 +7,96 @@
 {% if current_user.is_authenticated %}
 <div class="saved">
 
-    <div class="cart-header">
-        <h2>Cart</h2>
-        <form action="{{ url_for('saved.saved_submit_order') }}" method="POST">
-            <button type="submit"
-                class="cart-submit">submit order</button>
-        </form>
+    <div class="cart-body">
+        <div class="cart-left">
+            <div class="cart-header">
+                <h2>Cart</h2>
+            </div>
+            <table class="table">
+                <thead class="">
+                    <tr>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Time Added</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr class="saved-row">
+                        <th scope="row">{{item.pid}}</th>
+                        <td class="" id="update-qty">
+                            {{item.num_items}}
+                            <form action="{{ url_for('saved.saved_updateqty', pid=item.pid, sellerid=item.seller_id) }}" 
+                                method="POST"
+                                class="qty">
+                                <input type="number" id="quantity" name="quantity">
+                                <button class="cart-update" type="submit">update</button>
+                            </form>
+                        </td>
+                        <td class="cart-data">$ {{item.price}}</td>
+                        <td class="cart-data">{{humanize_time(item.time_added)}}</td>
+                        <td>
+                            <form action="{{ url_for('saved.saved_to_wishlist', pid=item.pid, sellerid=item.seller_id) }}" method="POST">
+                                <button class="cart-update" type="submit">move to wishlist</button>
+                            </form>
+                        </td>
+                        <td class="cart-remove">
+                            <form action="{{ url_for('saved.saved_remove', pid=item.pid, sellerid=item.seller_id)}}" method="POST">
+                                <button type="submit">X</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <h2>Wishlist</h2>
+            <table class="table">
+                <thead class="">
+                    <tr>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Time Added</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in wish_items %}
+                    <tr class="saved-row">
+                        <th scope="row">{{item.pid}}</th>
+                        <td>$ {{item.price}}</td>
+                        <td>{{humanize_time(item.time_added)}}</td>
+                        <td>
+                            <form 
+                                action="{{ url_for('saved.saved_to_cart', pid=item.pid, sellerid=item.seller_id) }}" 
+                                method="POST">
+                                <button class="cart-update" type="submit">move to cart</button>
+                            </form>
+                        </td>
+                        <td class="cart-remove">
+                            <form action="{{ url_for('saved.saved_remove', pid=item.pid, sellerid=item.seller_id)}}" method="POST">
+                                <button type="submit">X</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="cart-right">
+            <p>Subtotal: $</p>
+            <p>Estimated total: $</p>
+            <form action="{{ url_for('saved.saved_submit_order') }}" method="POST">
+                <button type="submit"
+                    class="cart-submit">submit order</button>
+            </form>
+        </div>
     </div>
-    <table class="container table">
-        <thead class="">
-            <tr>
-                <th scope="col">Product Name</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Unit Price</th>
-                <th scope="col">Time Added</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cart_items %}
-            <tr class="saved-row">
-                <th scope="row">{{item.pid}}</th>
-                <td class="" id="update-qty">
-                    {{item.num_items}}
-                    <form action="{{ url_for('saved.saved_updateqty', pid=item.pid, sellerid=item.seller_id) }}" 
-                        method="POST"
-                        class="qty">
-                        <input type="number" id="quantity" name="quantity">
-                        <button class="cart-update" type="submit">update</button>
-                    </form>
-                </td>
-                <td class="cart-data">$ {{item.price}}</td>
-                <td class="cart-data">{{humanize_time(item.time_added)}}</td>
-                <td>
-                    <form action="{{ url_for('saved.saved_to_wishlist', pid=item.pid, sellerid=item.seller_id) }}" method="POST">
-                        <button class="cart-update" type="submit">move to wishlist</button>
-                    </form>
-                </td>
-                <td class="cart-remove">
-                    <form action="{{ url_for('saved.saved_remove', pid=item.pid, sellerid=item.seller_id)}}" method="POST">
-                        <button type="submit">X</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
     
-    <h2>Wishlist</h2>
-    <table class="container table">
-        <thead class="">
-            <tr>
-                <th scope="col">Product Name</th>
-                <th scope="col">Unit Price</th>
-                <th scope="col">Time Added</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in wish_items %}
-            <tr class="saved-row">
-                <th scope="row">{{item.pid}}</th>
-                <td>$ {{item.price}}</td>
-                <td>{{humanize_time(item.time_added)}}</td>
-                <td>
-                    <form 
-                        action="{{ url_for('saved.saved_to_cart', pid=item.pid, sellerid=item.seller_id) }}" 
-                        method="POST">
-                        <button class="cart-update" type="submit">move to cart</button>
-                    </form>
-                </td>
-                <td class="cart-remove">
-                    <form action="{{ url_for('saved.saved_remove', pid=item.pid, sellerid=item.seller_id)}}" method="POST">
-                        <button type="submit">X</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
     
     {% else %}
     <p><a href="{{ url_for('users.login') }}">Log in</a> to see your cart!</p>

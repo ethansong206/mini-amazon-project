@@ -30,6 +30,10 @@ class SavedItem:
 
         return SavedItem(*(rows[0])) if rows is not None else None
 
+    # @staticmethod
+    # def get_cart_subtotal(uid):
+        # this method will join saveditems with inventory to calculate a subtotal price of the items in the cart
+
     @staticmethod
     def get_all_cart_by_uid(uid):
         rows = app.db.execute('''
