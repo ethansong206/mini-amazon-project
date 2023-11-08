@@ -3,8 +3,8 @@
 <br /><br />
 {% if is_seller %}
 <h2>Your inventory:</h2>
-<table class="table table-hover table-bordered container">
-  <thead class="thead-dark">
+<table class="table table-hover table-bordered container" class="product-table">
+  <thead class="table">
     <tr>
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
@@ -14,9 +14,9 @@
   <tbody>
     {% for item in inventory_items%}
     <tr>
-      <th scope="row">{{item.name}}</th>
-      <th scope="row">${{item.price}}</th>
-      <th scope="row">{{item.quantity}}</th>
+      <td scope="row">{{item.name}}</td>
+      <td scope="row">${{item.price}}</td>
+      <td scope="row">{{item.quantity}}</td>
     </tr>
     {% endfor %}
   </tbody>
