@@ -83,3 +83,68 @@ WHERE order_id IN (
                               uid = uid)
         columns = ['order_id', 'seller_id', 'pid', 'num_items', 'price', 'status', 'time_purchased', 'time_updated', 'name']
         return rows if rows else []
+    
+    @staticmethod
+    def update_firstname(id, new_firstname):
+        try:
+            app.db.execute("""
+                UPDATE Users
+                SET firstname = :new_firstname
+                WHERE id = :id
+            """, new_firstname=new_firstname, id=id)
+            return
+        except Exception as e:
+            print(str(e))
+            return None
+
+    @staticmethod
+    def update_lastname(id, new_lastname):
+        try:
+            app.db.execute("""
+                UPDATE Users
+                SET lastname = :new_lastname
+                WHERE id = :id
+            """, new_lastname=new_lastname, id=id)
+            return
+        except Exception as e:
+            print(str(e))
+            return None
+
+    @staticmethod
+    def update_address(id, new_address):
+        try:
+            app.db.execute("""
+                UPDATE Users
+                SET address = :new_address
+                WHERE id = :id
+            """, new_address=new_address, id=id)
+            return
+        except Exception as e:
+            print(str(e))
+            return None
+
+    @staticmethod
+    def update_email(id, new_email):
+        try:
+            app.db.execute("""
+                UPDATE Users
+                SET email = :new_email
+                WHERE id = :id
+            """, new_email=new_email, id=id)
+            return
+        except Exception as e:
+            print(str(e))
+            return None
+    
+    @staticmethod
+    def update_balance(id, new_balance):
+        try:
+            app.db.execute("""
+                UPDATE Users
+                SET balance = :new_balance
+                WHERE id = :id
+            """, new_balance=new_balance, id=id)
+            return
+        except Exception as e:
+            print(str(e))
+            return None
