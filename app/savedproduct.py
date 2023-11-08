@@ -59,7 +59,6 @@ def saved_updateqty(pid):
     seller_id = request.args.get('sellerid')
     qty = request.form.get('quantity')
     if int(qty) > 0:
-        inventory_item = Inventory.get()
         SavedItem.update_quantity(current_user.id, seller_id, pid, qty)
     return redirect(url_for('saved.saved'))
 
