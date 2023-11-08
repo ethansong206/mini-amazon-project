@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<h2>Product: {{ product.name }}</h2>
+<section style="text-align: left; float: left;color: black;width: 80%;">
+    <h4 style="display: inline">Description: </h4>
+    <p style="display: inline">{{ product.description }}</p>
+</section>
+<style>
+    aside {
+      width: 20%;
+      float: right;
+      font-style: italic;
+      background-color: lightgray;
+    }
+    </style>
+<aside>
+    <h4>Sellers:</h4>
+</aside>
+
+<br><br>
+<br><br>
+
+<div>
+    <h5 style="display: inline;">Category: </h5>
+    <p style="display: inline;">{{ product.category }}</p>
+</div>
+
+<div style="color:black;">
+    <img src=product.image>
+</div>
+
+{% endblock %}
