@@ -168,6 +168,15 @@ button {
   font-weight: bolder !important;
 }
 
+.order-status-link {
+  color: var(--royal-blue);
+  text-align: center;
+}
+
+.order-status-link:hover {
+  text-decoration: underline;
+}
+
 /* PRODUCT DETAILS */
 
 .product-view {
