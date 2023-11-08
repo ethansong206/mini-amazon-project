@@ -16,9 +16,9 @@ class SavedItem:
         rows = app.db.execute('''
         SELECT uid, seller_id, pid, num_items, time_added
         FROM SavedItems
-        WHERE S.uid = :uid
-        AND S.seller_id = :seller_id
-        AND S.pid = :pid
+        WHERE uid = :uid
+        AND seller_id = :seller_id
+        AND pid = :pid
         ''',
         uid=uid,
         seller_id=seller_id,
@@ -53,21 +53,45 @@ class SavedItem:
         return rows if rows else []
 
     @staticmethod
-    def add_to_cart(uid, seller_id, pid, num_items, timestamp):
+    def add_to_cart(uid, seller_id, pid, num_items, time_added):
         try:
             rows = app.db.execute('''
             INSERT INTO SavedItems(uid, seller_id, pid, num_items, in_cart, time_added)
-            VALUES(:uid, :sid, :pid, num_items, :in_cart, :timestamp)
+            VALUES(:uid, :sid, :pid, num_items, :in_cart, :time_added)
             ''',
             uid=uid,
             sid=seller_id,
             pid=pid,
             num_items=num_items,
             in_cart=True,
-            timestamp=timestamp
+            time_added=time_added
             )
             return SavedItem.get(uid, seller_id, pid)
         except Exception as e:
+            return None
+
+    def move_to_cart(uid, seller_id, pid, time_added):
+        try:
+            rows = app.db.execute('''
+            UPDATE SavedItems
+            SET in_cart=:in_cart, time_added=:time_added
+            WHERE uid=:uid
+            AND seller_id=:sid
+            AND pid=:pid
+            ''',
+            uid=uid,
+            sid=seller_id,
+            pid=pid,
+            in_cart=True,
+            time_added=time_added
+            )
+
+            # app.db.commit()
+
+            return SavedItem.get(uid, seller_id, pid)
+        except Exception as e:
+            print(e)
+            print('excpetion')
             return None
 
     def move_to_wishlist(uid, seller_id, pid, time_added):

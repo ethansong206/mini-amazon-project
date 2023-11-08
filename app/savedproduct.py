@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, request
 from flask_login import current_user
 import datetime
+from humanize import naturaltime
 
 from .models.savedproduct import SavedItem
 
@@ -9,6 +10,9 @@ bp = Blueprint('saved', __name__)
 
 # EVERYTHING HAS TO BE UPDATED SO THAT WE USE THE THREE KEYS TO UPDATE SAVED ITEMS
 
+def humanize_time(dt):
+    return naturaltime(datetime.datetime.now() - dt)
+
 @bp.route('/saved')
 def saved():
     if current_user.is_authenticated:
@@ -16,7 +20,8 @@ def saved():
         wish_items = SavedItem.get_all_wishlist_by_uid(current_user.id)
         return render_template('saved.html',
                                 cart_items=cart_items,
-                                wish_items=wish_items)
+                                wish_items=wish_items,
+                                humanize_time=humanize_time)
     return redirect('/')
 
 @bp.route('/saved/add/<int:pid>', methods=['POST'])
@@ -34,9 +39,6 @@ def saved_updateqty(pid):
 @bp.route('/saved/towishlist/<int:pid>', methods=['GET', 'POST'])
 def saved_to_wishlist(pid):
     seller_id = request.args.get('sellerid')
-    print(current_user.id)
-    print(pid)
-    print(datetime.datetime.now())
     SavedItem.move_to_wishlist(current_user.id, seller_id, pid, datetime.datetime.now())
     return redirect(url_for('saved.saved'))
 
