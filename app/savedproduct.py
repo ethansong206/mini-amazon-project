@@ -3,6 +3,7 @@ from flask_login import current_user
 import datetime
 from humanize import naturaltime
 
+from .models.user import User
 from .models.inventory import Inventory
 from .models.savedproduct import SavedItem
 from .models.order import Order
@@ -20,13 +21,25 @@ def saved():
     if current_user.is_authenticated:
         cart_items = SavedItem.get_all_cart_by_uid(current_user.id)
         wish_items = SavedItem.get_all_wishlist_by_uid(current_user.id)
-        # subtotal = SavedItem.get_cart_subtotal(current_user.id)
+        subtotal = SavedItem.get_cart_subtotal(current_user.id)
+        user = User.get(current_user.id)
+        if subtotal != None:
+            return render_template('saved.html',
+                                    user=user,   
+                                    cart_items=cart_items,
+                                    wish_items=wish_items,
+                                    subtotal="{:.2f}".format(subtotal),
+                                    humanize_time=humanize_time)
         return render_template('saved.html',
-                                cart_items=cart_items,
-                                wish_items=wish_items,
-                                # subtotal=subtotal,
-                                humanize_time=humanize_time)
+                                    cart_items=cart_items,
+                                    wish_items=wish_items,
+                                    humanize_time=humanize_time)
     return redirect('/')
+
+@bp.route('/saved/checkout', methods=['GET', 'POST'])
+def saved_checkout():
+    cart_items = SavedItem.get_all_cart_by_uid(current_user.id)
+    return render_template('checkout.html', cart_items=cart_items)
 
 @bp.route('/saved/submitorder', methods=['POST'])
 def saved_submit_order():
