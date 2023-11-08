@@ -1,11 +1,16 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+
+{% block content %}
 
 {% if is_seller %}
 <br/>
 <a href="/seller" type="button" class="btn btn-primary">Seller View</a>
 {% endif %}
 
-<br /><br />
+{% if current_user.is_authenticated %}
+<a href="/orders" type="button" class="btn btn-info">Recent Orders</a>
+{% endif %}
+<br />
 
 <div class="filter-products">
   <h2>Products for sale:</h2>

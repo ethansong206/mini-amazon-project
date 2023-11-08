@@ -1,15 +1,31 @@
+:root {
+  --royal-blue: #00539B;
+  --navy-blue: #012169;
+  --light-green: #A2C5AC;
+  --light-green-hover: #b2cfba;
+  --light-gray: #D3D5D4;
+  --light-gray-hover: #b3b5b4;
+  --ash-gray: #9DB5B2;
+  --red: #ED254E;
+}
+
 section {
 color: #fff;
 text-align: center;
 }
 
 body {
-  font-family: "Lato", sans-serif;
+  font-family: 'Roboto', serif;
 }
+
+
+/* MAIN */
+
+/* NAVIGATION */
 
 .sidenav {
   height: 100%;
-  background-color: #000;
+  background-color: var(--navy-blue);
   overflow-x: hidden;
   padding: 20px 10px;
 }
@@ -79,14 +95,71 @@ body {
 
 /* CART */
 
-#update-qty {
+.saved button {
+  border-radius: 5px;
+  transition: all;
+  transition-duration: 100ms;
+  border: none;
+  padding: 4px 1rem;
+}
+
+.saved button:hover {
+  cursor: pointer;
+}
+
+.cart-header {
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  padding: 0px 1rem;
 }
 
-input {
+.cart-submit {
+  background-color: var(--light-green);
+}
+
+.cart-submit:hover {
+  background-color: var(--light-green-hover);
+}
+
+.cart-update {
+  background-color: var(--light-gray);
+}
+
+.cart-update:hover {
+  background-color: var(--light-gray-hover);
+  cursor: pointer;
+}
+
+.saved-row td {
+  align-self: center;
+}
+
+.cart-remove button {
+  background-color: var(--red);
+  opacity: 80%;
+  color: white;
+}
+
+.cart-remove button:hover {
+  opacity: 100%;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.table th {
+  vertical-align: middle;
+}
+
+#update-qty {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#quantity {
   width: 4rem;
 }
