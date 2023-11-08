@@ -159,7 +159,7 @@
         {% for purchase in purchase_history%}
         <tr>
           <th scope="row">
-            <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-link">
+            <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-link">
              {{purchase.order_id}}
             </a>
           </th>
@@ -169,21 +169,21 @@
             <th scope="row">${{purchase.price}}</th>
             {% if purchase.status == "On Hold" %}
             <th scope="row" class="purchase-on-hold order-status-link">
-              <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-status-link">
+              <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
                 {{purchase.status}}
                </a>
             </th>
             {% endif %}
             {% if purchase.status == "Pending" %}
               <th scope="row" class="purchase-pending order-status-link">
-                <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-status-link">
+                <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
                   {{purchase.status}}
                  </a>
               </th>
             {% endif %}
             {% if purchase.status == "Fulfilled" %}
               <th scope="row" class="purchase-fulfilled order-status-link">
-                <a href="url_for('order.order_get_items', orderid=purchase.order_id)" class="order-status-link">
+                <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
                   {{purchase.status}}
                  </a>
               </th>

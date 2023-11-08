@@ -3,6 +3,7 @@ from flask_login import current_user
 import datetime
 
 from .models.product import Product
+from .models.order import Order
 from .models.savedproduct import SavedItem
 
 from flask import jsonify
@@ -38,3 +39,12 @@ def product_add_to_cart(product_id):
     seller_id = request.args.get('seller_id')
     SavedItem.add_to_cart(current_user.id, int(seller_id), int(product_id), 1, datetime.datetime.now())
     return redirect('/saved')
+
+@bp.route('/product/<int:orderid>', methods=['GET'])
+def product_get_items(orderid):
+  if current_user.is_authenticated:
+    order_items = Order.get_order_items(orderid)
+    return render_template('orderitems.html',
+    order_items=order_items,
+    order_id=orderid,
+    humanize_time=humanize_time)
