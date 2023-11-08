@@ -38,8 +38,14 @@ def saved():
 
 @bp.route('/saved/checkout', methods=['GET', 'POST'])
 def saved_checkout():
-    cart_items = SavedItem.get_all_cart_by_uid(current_user.id)
-    return render_template('checkout.html', cart_items=cart_items)
+    cart_items = SavedItem.get_valid_cart_by_uid(current_user.id)
+    subtotal = SavedItem.get_cart_subtotal(current_user.id)
+    user = User.get(current_user.id)
+    return render_template('checkout.html', 
+                            cart_items=cart_items, 
+                            subtotal="{:.2f}".format(subtotal),
+                            int_subtotal=subtotal,
+                            user=user)
 
 @bp.route('/saved/submitorder', methods=['POST'])
 def saved_submit_order():
