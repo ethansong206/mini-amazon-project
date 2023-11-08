@@ -121,6 +121,10 @@ button {
   width: 3rem;
 }
 
+#prodTableBody a {
+  color: var(--royal-blue);
+}
+
 #recent-table {
   padding: 1rem;
 }
@@ -485,6 +489,7 @@ button {
 .checkout .balance .edit-balance:hover {
   color: black;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 .place-order {
