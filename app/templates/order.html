@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+{% if current_user.is_authenticated %}
+<div class="order-page">
+  <h1>Orders</h1>
+  <table class="container table">
+    <thead>
+      <tr>
+        <th scope="col">Order ID</th>
+        <th scope="col">Order Status</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Last Updated</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr class="order-row">
+        <th scope="row">{{order.id}}</th>
+        <td>{{order.status}}</td>
+        <td>{{order.total}}</td>
+        <td>
+          <form action="{{ url_for('order.order_get_items', orderid=order.id) }}" method="GET">
+            <button type="submit">View Order items</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endif %}
+
+{% endblock %}

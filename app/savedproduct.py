@@ -47,3 +47,9 @@ def saved_to_cart(pid):
     seller_id = request.args.get('sellerid')
     SavedItem.move_to_cart(current_user.id, seller_id, pid, datetime.datetime.now())
     return redirect(url_for('saved.saved'))
+
+@bp.route('/saved/remove/<int:pid>', methods=['GET', 'POST'])
+def saved_remove(pid):
+    seller_id = request.args.get('sellerid')
+    SavedItem.remove_item(current_user.id, seller_id, pid)
+    return redirect(url_for('saved.saved'))

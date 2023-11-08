@@ -6,6 +6,7 @@
   --light-gray: #D3D5D4;
   --light-gray-hover: #b3b5b4;
   --ash-gray: #9DB5B2;
+  --red: #ED254E;
 }
 
 section {
@@ -104,7 +105,6 @@ body {
 
 .saved button:hover {
   cursor: pointer;
-  box-shadow: 1px 1px grey;
 }
 
 .cart-header {
@@ -133,6 +133,16 @@ body {
 
 .saved-row td {
   align-self: center;
+}
+
+.cart-remove button {
+  background-color: var(--red);
+  opacity: 80%;
+  color: white;
+}
+
+.cart-remove button:hover {
+  opacity: 100%;
 }
 
 #update-qty {

@@ -120,6 +120,7 @@ class SavedItem:
 
     @staticmethod
     def update_quantity(uid, seller_id, pid, num_items):
+        # this will have a check to see if the quantity is less than inventory
         try:
             rows = app.db.execute('''
             UPDATE SavedItems
@@ -137,4 +138,22 @@ class SavedItem:
         except Exception as e:
             print(e)
             print('excpetion')
+            return None
+
+    @staticmethod
+    def remove_item(uid, seller_id, pid):
+        try:
+            rows = app.db.execute('''
+            DELETE FROM SavedItems
+            WHERE uid=:uid
+            AND seller_id=:seller_id
+            AND pid=:pid
+            ''',
+            uid=uid,
+            seller_id=seller_id,
+            pid=pid
+            )
+            return
+        except Exception as e:
+            print(e)
             return None

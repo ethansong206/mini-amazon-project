@@ -22,6 +22,7 @@
                 <th scope="col">Unit Price</th>
                 <th scope="col">Time Added</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +45,11 @@
                         <button class="cart-update" type="submit">move to wishlist</button>
                     </form>
                 </td>
+                <td class="cart-remove">
+                    <form action="{{ url_for('saved.saved_remove', pid=item.pid, sellerid=item.seller_id)}}" method="POST">
+                        <button type="submit">X</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -56,6 +62,7 @@
                 <th scope="col">Product Name</th>
                 <th scope="col">Unit Price</th>
                 <th scope="col">Time Added</th>
+                <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -70,6 +77,11 @@
                         action="{{ url_for('saved.saved_to_cart', pid=item.pid, sellerid=item.seller_id) }}" 
                         method="POST">
                         <button class="cart-update" type="submit">move to cart</button>
+                    </form>
+                </td>
+                <td class="cart-remove">
+                    <form action="{{ url_for('saved.saved_remove', pid=item.pid, sellerid=item.seller_id)}}" method="POST">
+                        <button type="submit">X</button>
                     </form>
                 </td>
             </tr>
