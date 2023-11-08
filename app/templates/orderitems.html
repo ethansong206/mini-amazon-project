@@ -2,11 +2,9 @@
 
 {% block content %}
 
-<br><br>
-
 {% if current_user.is_authenticated %}
 <div class="order-items-page">
-  <a href="/orders">back to orders</a>
+  <a class="back-to-orders" href="/orders">back to orders</a>
   <h1>Order ID: {{order_id}}</h1>
   <table class="container table">
     <thead>
@@ -21,7 +19,7 @@
     <tbody>
       {% for item in order_items %}
       <tr class="order-item-row">
-        <th scope="row">{{item.pid}}</th>
+        <th scope="row">{{item.name}}</th>
         <td>${{item.price}}</td>
         <td>{{item.num_items}}</td>
         <td>{{item.status}}</td>
