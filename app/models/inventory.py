@@ -31,3 +31,42 @@ class Inventory:
                               seller_id=seller_id)
         return rows if rows else []
 
+    @staticmethod
+    def update_inventory_price(pid, seller_id, new_price):
+        # this will have a check to see if the quantity is less than inventory
+        try:
+            rows = app.db.execute('''
+            UPDATE Inventory
+            SET price = :new_price
+            WHERE seller_id=:seller_id
+            AND pid=:pid
+            ''',
+            seller_id=seller_id,
+            new_price=new_price,
+            pid=pid
+            )
+            return Inventory.get(pid, seller_id)
+        except Exception as e:
+            print(e)
+            print('excpetion')
+            return None
+
+    @staticmethod
+    def update_inventory_qty(pid, seller_id, new_qty):
+        # this will have a check to see if the quantity is less than inventory
+        try:
+            rows = app.db.execute('''
+            UPDATE Inventory
+            SET quantity = :new_qty
+            WHERE seller_id=:seller_id
+            AND pid=:pid
+            ''',
+            seller_id=seller_id,
+            new_qty=new_qty,
+            pid=pid
+            )
+            return Inventory.get(pid, seller_id)
+        except Exception as e:
+            print(e)
+            print('excpetion')
+            return None

@@ -15,12 +15,33 @@
     {% for item in inventory_items%}
     <tr>
       <td scope="row">{{item.name}}</td>
-      <td scope="row">${{item.price}}</td>
-      <td scope="row">{{item.quantity}}</td>
+      <td scope="row">
+        <form action="{{ url_for('seller.update_inventory_price', pid=item.pid) }}" 
+          method="POST"
+          class="qty">
+          <input type="number" id="price" name="price" value="{{item.price}}" step="0.01" min="0.01">
+          <button id="qty-update" type="submit">&check;</button>
+        </form>
+      </td>
+      <td scope="row">
+        <form action="{{ url_for('seller.update_inventory_qty', pid=item.pid) }}" 
+          method="POST"
+          class="qty">
+          <input type="number" id="quantity" name="quantity" value="{{item.quantity}}">
+          <button id="qty-update" type="submit">&check;</button>
+        </form>
+      </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 {% else %}
 <h2>You are not a seller</h2>
-{% endif %} {% endblock %}
+{% endif %} 
+<script>
+  const input = document.querySelector('#price')
+  input.addEventListener('change', e => {
+    e.currentTarget.value = parseFloat(e.currentTarget.value).toFixed(2)
+  })
+</script>
+{% endblock %}
