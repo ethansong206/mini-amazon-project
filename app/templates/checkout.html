@@ -33,7 +33,8 @@
     </tbody>
   </table>
   <div class="balance">
-    Your balance is currently <span>${{user.balance}}</span><a href="/account" class="edit-balance">add funds</a>
+    Your balance is currently <span>{{ "${:,.2f}".format(int_balance) }}</span><a href="/account" class="edit-balance">add funds</a>
+
   </div>
   {% if user.balance >= int_subtotal %}
   <div class="place-order">

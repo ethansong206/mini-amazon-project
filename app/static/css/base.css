@@ -230,6 +230,11 @@ button {
   cursor: pointer;
 }
 
+.add-to-cart {
+  display: flex;
+  gap: 1rem;
+}
+
 #subtract-qty, #add-qty {
   background-color: var(--light-gray);
   color: var(--royal-blue);

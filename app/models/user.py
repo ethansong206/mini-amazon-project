@@ -16,10 +16,10 @@ class User(UserMixin):
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, id, email, firstname, lastname, balance, address
-FROM Users
-WHERE email = :email
-""",
+        SELECT password, id, email, firstname, lastname, balance, address
+        FROM Users
+        WHERE email = :email
+        """,
                               email=email)
         if not rows:  # email not found
             return None
@@ -43,10 +43,10 @@ WHERE email = :email
     def register(email, password, firstname, lastname):
         try:
             rows = app.db.execute("""
-INSERT INTO Users(email, password, firstname, lastname)
-VALUES(:email, :password, :firstname, :lastname)
-RETURNING id
-""",
+            INSERT INTO Users(email, password, firstname, lastname)
+            VALUES(:email, :password, :firstname, :lastname)
+            RETURNING id
+            """,
                                   email=email,
                                   password=generate_password_hash(password),
                                   firstname=firstname, lastname=lastname)
@@ -62,25 +62,25 @@ RETURNING id
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-SELECT id, email, firstname, lastname, balance, address
-FROM Users
-WHERE id = :id
-""",
+        SELECT id, email, firstname, lastname, balance, address
+        FROM Users
+        WHERE id = :id
+        """,
                               id=id)
         return User(*(rows[0])) if rows else None
 
     @staticmethod
     def get_purchase_history(uid):
         rows = app.db.execute('''
-SELECT order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated, name
-FROM Purchases
-JOIN Products ON Products.id = Purchases.pid
-WHERE order_id IN (
-    SELECT id FROM Orders
-    WHERE uid = :uid
-)
-ORDER BY time_updated DESC
-''',
+        SELECT order_id, seller_id, pid, num_items, price, status, time_purchased, time_updated, name
+        FROM Purchases
+        JOIN Products ON Products.id = Purchases.pid
+        WHERE order_id IN (
+            SELECT id FROM Orders
+            WHERE uid = :uid
+        )
+        ORDER BY time_updated DESC
+        ''',
                               uid = uid)
         columns = ['order_id', 'seller_id', 'pid', 'num_items', 'price', 'status', 'time_purchased', 'time_updated', 'name']
         return rows if rows else []
