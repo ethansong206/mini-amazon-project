@@ -14,11 +14,32 @@
         <h4>Sellers:</h4>
         {% for seller in sellers %}
         <div class="seller-list">
+            <span>{{seller.seller_id}}</span>
             <span>${{seller.price}}</span>
             <span>In stock: {{seller.quantity}}</span>
             <form action="{{ url_for('product.product_add_to_cart', product_id=product.pid, seller_id=seller.seller_id)}}" method="POST">
-                <button>add to cart</button>
+                <button id="subtract-qty">-</button>
+                <input type="number" id="quantity" name="quantity" value="{{seller.num_items}}">
+                <button id="add-qty">+</button>
+                <button type="submit">add to cart</button>
             </form>
+            <script>
+                const subtractQty = document.getElementById('subtract-qty');
+                const addQty = document.getElementById('add-qty');
+                const inputField = document.getElementById('quantity');
+
+                subtractQty.addEventListener('click', event => {
+                    event.preventDefault()
+                    const currVal = Number(inputField.value) || 1;
+                    inputField.value = currVal - 1;
+                })
+
+                addQty.addEventListener('click', event => {
+                    event.preventDefault()
+                    const currVal = Number(inputField.value) || 1;
+                    inputField.value = currVal + 1;
+                })
+            </script>
         </div>
         {% endfor %}
     </div>
@@ -32,7 +53,7 @@
     </div>
     
     <div style="color:black;">
-        <img src=product.image>
+        <img src="{{product.image}}" alt="{{product.name}}">
     </div>
 </div>
 

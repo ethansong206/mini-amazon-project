@@ -79,6 +79,7 @@ WHERE order_id IN (
     SELECT id FROM Orders
     WHERE uid = :uid
 )
+ORDER BY time_updated DESC
 ''',
                               uid = uid)
         columns = ['order_id', 'seller_id', 'pid', 'num_items', 'price', 'status', 'time_purchased', 'time_updated', 'name']
