@@ -2,6 +2,7 @@
 
 <br /><br />
 {% if is_seller %}
+<a href="{{url_for('seller.seller_get_orders')}}">fulfill orders</a>
 <h2>Your inventory:</h2>
 <table class="table table-hover table-bordered container" class="product-table">
   <thead class="table">

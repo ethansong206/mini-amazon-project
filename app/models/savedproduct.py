@@ -1,5 +1,6 @@
 from flask import current_app as app
 
+from .user import User
 from .inventory import Inventory
 from .order import Order
 from .purchase import Purchase
@@ -110,6 +111,15 @@ class SavedItem:
             # insert into Order and return id
             # insert each product into Purchases with new order id
             # remove the products from saveditems and from inventory
+
+            # check if enough balance
+            ordertotal = SavedItem.get_cart_subtotal(uid)
+            user = User.get(uid)
+
+            if int(user.balance) < int(ordertotal):
+                return None
+
+            # get cart
             items = app.db.execute('''
             SELECT *
             FROM SavedItems
@@ -118,6 +128,31 @@ class SavedItem:
             ''',
             uid=uid
             )
+
+            for item in items:
+                # get item price
+                inventory_item = app.db.execute('''
+                SELECT quantity
+                FROM Inventory
+                WHERE pid=:pid
+                AND seller_id=:seller_id
+                ''',
+                pid=item.pid,
+                seller_id=item.seller_id)
+
+                # not in inventory
+                if len(inventory_item) == 0:
+                    return None
+
+                # print(inventory_item)
+
+                qty = inventory_item[0][0]
+
+                # if not enough of item in inventory
+                if qty < item.num_items:
+                    return None
+
+            # this way, we only complete the order when ALL items are in stock 
 
             order = app.db.execute('''
             INSERT INTO Orders(uid, status, timestamp)
@@ -130,8 +165,18 @@ class SavedItem:
 
             orderid = order[0][0]
 
+            buyerbalanceupdate = app.db.execute('''
+            UPDATE Users
+            SET balance = balance - :total
+            WHERE id = :uid
+            ''',
+            uid=uid,
+            total=ordertotal)
+
             for item in items:
+
                 # get item price
+
                 inventory_item = app.db.execute('''
                 SELECT price, quantity
                 FROM Inventory
@@ -141,19 +186,17 @@ class SavedItem:
                 pid=item.pid,
                 seller_id=item.seller_id)
 
-                if len(inventory_item) == 0:
-                    return
+                total_seller_inc = inventory_item[0][0] * item.num_items
 
-                print(inventory_item)
+                # give seller money
 
-                priceperitem = inventory_item[0][0]
-                qty = inventory_item[0][1]
-
-                if qty < item.num_items:
-                    return
-
-                # check if enough balance
-                
+                sellerbalanceupdate = app.db.execute('''
+                UPDATE Users
+                SET balance = balance + :total
+                WHERE id = :seller_id
+                ''',
+                seller_id=item.seller_id,
+                total=total_seller_inc)
 
                 # delete item from inventory
                 deleted = app.db.execute('''
@@ -188,11 +231,11 @@ class SavedItem:
                 order_id=orderid,
                 seller_id=item.seller_id,
                 pid=item.pid,
+                status="Pending",
                 num_items=item.num_items,
-                price=priceperitem)
-                print(item.uid)
-
-            
+                time_purchased=time_purchased,
+                time_updated=time_purchased,
+                price=total_seller_inc)
 
             return orderid
             

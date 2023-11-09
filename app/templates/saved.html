@@ -31,7 +31,7 @@
                                 <th scope="row">
                                     {% if item.price == None %}
                                     item none
-                                    {{item.price}}
+                                    {{ "$ {:,.2f}".format(item.price) }}
                                     {% endif %}
                                     <a href="/product?product_id={{item.pid}}">{{item.name}}</a>
                                 </th>
@@ -43,8 +43,8 @@
                                         <button id="qty-update" type="submit">&check;</button>
                                     </form>
                                 </td>
-                                <td class="cart-data">$ {{item.price}}</td>
-                                <td>$ {{item.totalprice}}</td>
+                                <td class="cart-data">{{ "$ {:,.2f}".format(item.price) }}</td>
+                                <td>{{ "$ {:,.2f}".format(item.totalprice) }}</td>
                                 <!-- <td class="cart-data">{{humanize_time(item.time_added)}}</td> -->
                                 <td class="fixed-col" >
                                     <form action="{{ url_for('saved.saved_to_wishlist', pid=item.pid, sellerid=item.seller_id) }}" method="POST">
@@ -95,7 +95,7 @@
                             <th scope="row">
                                 <a href="/product?product_id={{item.pid}}">{{item.name}}</a>
                             </th>
-                            <td class="cart-data">$ {{item.price}}</td>
+                            <td class="cart-data">{{ "$ {:,.2f}".format(item.price) }}</td>
                             <td class="cart-data">{{humanize_time(item.time_added)}}</td>
                             <td class="fixed-col" >
                                 <form action="{{ url_for('saved.saved_to_cart', pid=item.pid, sellerid=item.seller_id) }}" method="POST">
@@ -131,13 +131,14 @@
         {% if subtotal %}
             <div class="cart-right">
                 <div class="line-total">
-                    <span>Subtotal: </span>
-                    <span>${{subtotal}}</span>
+                    <span>Subtotal </span>
+                    <span>{{ "$ {:,.2f}".format(subtotal|int) }}</span>
                 </div>
                 <div class="line-total">
-                    <span>Balance: </span>
-                    <span><a href="/account" id="edit-balance">add funds</a> ${{user.balance}}</span>
+                    <span>Balance </span>
+                    <span>{{ "$ {:,.2f}".format(user.balance) }}</span>
                 </div>
+                <a href="/info/balance" id="edit-balance">add funds</a>
                 <form action="{{ url_for('saved.saved_checkout') }}" method="GET">
                     <button type="submit"
                         class="cart-submit">checkout</button>
