@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, url_for
 from flask_login import current_user
 import datetime
 
@@ -59,8 +59,11 @@ def product_add_to_cart(product_id):
     print('adding to cart')
     seller_id = request.args.get('seller_id')
     num_items = request.form.get('quantity')
-    SavedItem.add_to_cart(current_user.id, int(seller_id), int(product_id), num_items, datetime.datetime.now())
-    return redirect('/saved')
+    if int(num_items) > 0:
+        SavedItem.add_to_cart(current_user.id, int(seller_id), int(product_id), num_items, datetime.datetime.now())
+        return redirect('/saved')
+    else:
+        return redirect(url_for('product.product_page', product_id=product_id))
 
 @bp.route('/product/<int:orderid>', methods=['GET'])
 def product_get_items(orderid):

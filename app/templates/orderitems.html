@@ -10,6 +10,7 @@
     <thead>
       <tr>
         <th scope="col">Product ID</th>
+        <th scope="col">Seller ID</th>
         <th scope="col">Product Price</th>
         <th scope="col">Quantity</th>
         <th scope="col">Product Status</th>
@@ -20,6 +21,7 @@
       {% for item in order_items %}
       <tr class="order-item-row">
         <th scope="row">{{item.name}}</th>
+        <td>{{item.seller_id}}</td>
         <td>${{item.price}}</td>
         <td>{{item.num_items}}</td>
         <td>{{item.status}}</td>

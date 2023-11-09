@@ -204,6 +204,11 @@ button {
   height: 3rem;
 }
 
+.seller-list form {
+  display: flex;
+  flex-direction: row;
+}
+
 .seller-list span {
   vertical-align: middle;
   align-self: center;
@@ -223,6 +228,17 @@ button {
 .seller-list button:hover {
   background-color: var(--light-green-hover);
   cursor: pointer;
+}
+
+#subtract-qty, #add-qty {
+  background-color: var(--light-gray);
+  color: var(--royal-blue);
+  transition: all;
+  transition-duration: 200ms;
+}
+
+#subtract-qty:hover, #add-qty:hover {
+  background-color: var(--light-gray-hover);
 }
 
 /* CART */
