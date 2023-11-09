@@ -24,10 +24,14 @@ color: #fff;
 text-align: center;
 }
 
-body {
+html {
   font-family: 'Roboto', serif;
+  min-height: 100%;
 }
 
+body {
+  min-height: 100vh;
+}
 
 /* MAIN */
 
@@ -49,6 +53,11 @@ button {
   color: white;
 }
 
+.nav-user svg {
+  vertical-align: middle;
+  padding-bottom: .1rem;
+}
+
 .nav-buttons {
   display: flex;
   flex-direction: row;
@@ -65,6 +74,7 @@ button {
 .main {
   padding: 0px 10px;
   padding-bottom: 2rem;
+  min-height: 80vh;
 }
 
 .login-main-text {
@@ -181,6 +191,84 @@ button {
 .order-status-link:hover {
   text-decoration: underline;
 }
+
+/* USER ACCOUNT */
+
+.update-balance-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.update-balance-page {
+  width: 50%;
+  margin: 4rem auto;
+  padding: 2rem;
+  background-color: var(--light-gray);
+}
+
+.update-balance-page h1 {
+  padding-bottom: 1rem;
+}
+
+.update-balance-page form {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  gap: 2rem;
+}
+
+.update-balance-page form .btn-group-custom {
+  display: flex;
+  border-radius: 5px !important;
+  flex-direction: row;
+  gap: 4rem;
+  justify-content: center;
+}
+
+.balance-input-btn input {
+  visibility:hidden;
+}
+.balance-input-btn label {
+  cursor: pointer;
+  background-color: white;
+  color: var(--navy-blue);
+  padding: 0 1rem;
+  align-items: center;
+  vertical-align: center;
+  padding: .1rem 1rem;
+  text-transform: uppercase;
+  border: 3px solid white;
+  font-size: 1.2rem;
+}
+.balance-input-btn input:checked + label {
+  background-color: var(--navy-blue);
+  color: white;
+  border: 3px solid var(--light-green);
+}
+
+.btn-group-custom input {
+  position: fixed;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.update-balance-page .amount-input {
+  width: 40%;
+  margin: auto;
+}
+
+.update-balance-page .amount-input input {
+  width: 100%;
+}
+
+.update-balance-button {
+  width: 20%;
+  margin: auto;
+  background-color: var(--ash-gray);
+}
+
 
 /* PRODUCT DETAILS */
 

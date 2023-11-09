@@ -138,7 +138,7 @@
                     <span>Balance </span>
                     <span>{{ "$ {:,.2f}".format(user.balance) }}</span>
                 </div>
-                <a href="/info" id="edit-balance">add funds</a>
+                <a href="/info/balance" id="edit-balance">add funds</a>
                 <form action="{{ url_for('saved.saved_checkout') }}" method="GET">
                     <button type="submit"
                         class="cart-submit">checkout</button>

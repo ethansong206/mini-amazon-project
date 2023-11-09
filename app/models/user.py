@@ -138,14 +138,22 @@ WHERE email = :email
             return None
     
     @staticmethod
-    def update_balance(id, new_balance):
+    def update_balance(id, amount, is_add):
         try:
-            app.db.execute("""
-                UPDATE Users
-                SET balance = :new_balance
-                WHERE id = :id
-            """, new_balance=new_balance, id=id)
-            return
+            if is_add:
+                app.db.execute("""
+                    UPDATE Users
+                    SET balance = balance + :amount
+                    WHERE id = :id
+                """, amount=amount, id=id)
+                return
+            else:
+                app.db.execute("""
+                    UPDATE Users
+                    SET balance = balance - :amount
+                    WHERE id = :id
+                """, amount=amount, id=id)
+                return
         except Exception as e:
             print(str(e))
             return None
