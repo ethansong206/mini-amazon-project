@@ -24,7 +24,9 @@ def index():
     else:
         purchases = None
     # render the page by adding information to the index.html file
+    categories = Product.get_all_categories()
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases,
-                           is_seller=is_seller)
+                           is_seller=is_seller,
+                           categories=categories)

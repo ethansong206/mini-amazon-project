@@ -17,12 +17,91 @@
   <form class="form-inline" action="{{ url_for('product.most_expensive') }}" method="GET">
     <div class="form-group filter-criteria">
       <label for="k">Filter for top</label>
-      <input type="text" class="form-control" id="k" name="k">
+      <input type="number" class="form-control" id="k" name="k" required min="1" style="width: 100px;">
       <label for="category">most expensive items</label>
     </div>
     <button type="submit" class="btn btn-primary">Search</button>
   </form>
+  <div class="form-group">
+    <label for="k">Currently showing the <span id="currentKValue"></span><button id="clearKButton" class="btn btn-link" style="display: none;color:red;width:15px;text-align:center;padding:0;">X</button>  most expensive items</label>
+  </div>
+  <script>
+    var kInput = document.getElementById("k");
+    var currentKValue = document.getElementById("currentKValue");
+    var clearKButton = document.getElementById("clearKButton");
+  
+    function getQueryParam(name) {
+      var urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+  
+    var kFromURL = getQueryParam("k");
+    if (kFromURL) {
+      kInput.value = kFromURL;
+      currentKValue.textContent = kFromURL;
+      if (parseInt(kFromURL) > 0) {
+        clearKButton.style.display = "inline";
+      }
+    }
+    function clearKValue() {
+      kInput.value = "";
+      clearKButton.style.display = "none";
+      window.location.href = '/';
+    }
+    clearKButton.addEventListener("click", clearKValue);
+  </script>  
+  <form class="form-inline" action="{{ url_for('product.all_category') }}" method="GET">
+      <label for="category">Filter for category:</label>
+      <select name="category" id="category" onchange="filterCategory()">
+        <option value="" selected="selected">Select category</option>
+        {% for cat in categories %}
+            <option value="{{ cat.name }}">{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+  </form>
 </div>
+
+<style>
+  .radio-container {
+    display: inline-block;
+    vertical-align: middle;
+  }
+</style>
+
+<h5 class="form-inline">Products to show per page:
+  <div class="radio-container">
+    <input type="radio" id="perPage10" name="perPage" value="10" checked style="margin-right: 0; padding: 0;">
+    <label for="perPage10" class="radio-label">10</label>
+  </div>
+  <div class="radio-container">
+    <input type="radio" id="perPage25" name="perPage" value="25" style="margin-right: 0; padding: 0;">
+    <label for="perPage25" class="radio-label">25</label>
+  </div>
+  <div class="radio-container">
+    <input type="radio" id="perPage50" name="perPage" value="50" style="margin-right: 0; padding: 0;">
+    <label for="perPage50" class="radio-label">50</label>
+  </div>
+  <form class="form-inline" action="{{ url_for('product.search_for') }}" method="GET">
+    Search:
+    <div class="form-group">
+      <input type="text" class="form-control" name="search" placeholder="Search keywords">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+</h5>
+
+<script>
+  var currentCategory = document.getElementById("")
+
+  function filterCategory() {
+    var categorySelect = document.getElementById("category");
+    var category = categorySelect.value;
+
+    const newURL = `/filter?category=${category}`;
+
+    window.location.href = newURL;
+  }
+</script>
 <div class="product-table">
   <table class='table'>
     <thead class="">
@@ -64,8 +143,6 @@
   </div>
   
   <script>
-    var kInput = document.getElementById("k");
-    var currentKValue = document.getElementById("currentKValue");
     var perPageRadios = document.getElementsByName("perPage");
     var prodTableBody = document.getElementById("prodTableBody");
     var prevPageButton = document.getElementById("prevPage");
