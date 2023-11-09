@@ -82,3 +82,13 @@ FROM Category
 ''')
 
         return rows if rows is not None else None
+    
+    @staticmethod
+    def search(text):
+        rows = app.db.execute('''
+SELECT id, creator_id, name, category, description, image
+FROM Products
+WHERE name ILIKE '%' || :text || '%' OR description ILIKE '%' || :text || '%'
+''',
+                              text=text)
+        return rows if rows is not None else None

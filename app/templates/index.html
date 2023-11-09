@@ -60,20 +60,35 @@
     </select>
   </form>
 </div>
-<h5>Products to show per page:</h5>
+
 <style>
-  label {
-    margin-right: 10px;
+  .radio-container {
+    display: inline-block;
+    vertical-align: middle;
   }
 </style>
-<div>
-  <input type="radio" id="perPage10" name="perPage" value="10" checked />
-  <label for="perPage10">10</label>
-  <input type="radio" id="perPage25" name="perPage" value="25" />
-  <label for="perPage25">25</label>
-  <input type="radio" id="perPage50" name="perPage" value="50" />
-  <label for="perPage50">50</label>
-</div>
+
+<h5 class="form-inline">Products to show per page:
+  <div class="radio-container">
+    <input type="radio" id="perPage10" name="perPage" value="10" checked style="margin-right: 0; padding: 0;">
+    <label for="perPage10" class="radio-label">10</label>
+  </div>
+  <div class="radio-container">
+    <input type="radio" id="perPage25" name="perPage" value="25" style="margin-right: 0; padding: 0;">
+    <label for="perPage25" class="radio-label">25</label>
+  </div>
+  <div class="radio-container">
+    <input type="radio" id="perPage50" name="perPage" value="50" style="margin-right: 0; padding: 0;">
+    <label for="perPage50" class="radio-label">50</label>
+  </div>
+  <form class="form-inline" action="{{ url_for('product.search_for') }}" method="GET">
+    Search:
+    <div class="form-group">
+      <input type="text" class="form-control" name="search" placeholder="Search keywords">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+</h5>
 
 <script>
   var currentCategory = document.getElementById("")

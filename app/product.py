@@ -31,6 +31,13 @@ def all_category():
         items = Product.get_all(1)
     return render_template('index.html', avail_products=items, category=category, categories=categories)
 
+@bp.route('/search')
+def search_for():
+    categories = Product.get_all_categories()
+    text = request.args.get('search')
+    items = Product.search(text)
+    return render_template('index.html', avail_products=items, categories=categories)
+
 @bp.route('/product')
 def product_page():
     product_id = request.args.get('product_id')
