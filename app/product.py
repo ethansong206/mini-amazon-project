@@ -14,11 +14,22 @@ bp = Blueprint('product', __name__)
 @bp.route('/expensive')
 def most_expensive():
     k = request.args.get('k')
+    categories = Product.get_all_categories()
     if k is not None:
         items = Product.get_most_expensive(int(k))
     else:
         items = None
-    return render_template('index.html', avail_products=items)
+    return render_template('index.html', avail_products=items, categories=categories)
+
+@bp.route('/filter')
+def all_category():
+    category = request.args.get('category')
+    categories = Product.get_all_categories()
+    if category != "":
+        items = Product.get_all_from_category(category)
+    else:
+        items = Product.get_all(1)
+    return render_template('index.html', avail_products=items, category=category, categories=categories)
 
 @bp.route('/product')
 def product_page():

@@ -56,3 +56,29 @@ WHERE pid = :id
                               id=id)
         # sellers = [row.creator_id for row in rows]
         return rows if rows else []
+    
+    @staticmethod
+    def get_all_from_category(category):
+        if category != "":
+            rows = app.db.execute('''
+SELECT id, creator_id, name, category, description, image
+FROM Products
+WHERE category = :category
+''', 
+                              category=category)
+        else:
+            rows = app.db.execute('''
+SELECT id, creator_id, name, category, description, image
+FROM Products
+''')
+
+        return rows if rows is not None else None
+    
+    @staticmethod
+    def get_all_categories():
+        rows = app.db.execute('''
+SELECT DISTINCT(name)
+FROM Category
+''')
+
+        return rows if rows is not None else None
