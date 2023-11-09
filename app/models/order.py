@@ -32,7 +32,7 @@ class Order:
         ON O.id = P.order_id
         WHERE uid = :uid
         GROUP BY O.id, P.time_purchased
-
+        ORDER BY O.timestamp DESC
         ''', uid=uid)
 
         return [Order(*row) for row in rows]
@@ -51,12 +51,20 @@ class Order:
     @staticmethod
     def get_order_items(order_id):
         rows = app.db.execute('''
-        SELECT O.id, P.seller_id, P.pid, P.num_items, P.price, P.status, P.time_purchased, P.time_updated
+        SELECT O.id, P.seller_id, P.pid, P.num_items, P.price, P.status, P.time_purchased, P.time_updated, Prod.name
         FROM Orders O
         JOIN Purchases P
         ON O.id = P.order_id
+        JOIN Products Prod
+        ON P.pid = Prod.id
         WHERE O.id = :order_id
         ''',
         order_id=order_id)
 
-        return [Purchase(*row) for row in rows]
+        return rows if rows else []
+
+    @staticmethod
+    def get_order_price(order_id):
+        rows = app.db.execute('''
+        SELECT 
+        ''')

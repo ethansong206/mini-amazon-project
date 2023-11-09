@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, url_for
 from flask_login import current_user
 import datetime
 
@@ -44,9 +44,12 @@ def product_page():
 
     if product_id is not None:
         product = Product.get(int(product_id))
-        sellers = Product.get_all_sellers(int(product_id))
+        sellers = Product.get_all_sellers(current_user.id, int(product_id))
+
         if product:
-            return render_template('product_details.html', product=product, sellers=sellers)
+            return render_template('product_details.html', 
+                                    product=product, 
+                                    sellers=sellers)
         else:
             return render_template('product_not_found.html')
     return render_template('index.html')
@@ -55,8 +58,12 @@ def product_page():
 def product_add_to_cart(product_id):
     print('adding to cart')
     seller_id = request.args.get('seller_id')
-    SavedItem.add_to_cart(current_user.id, int(seller_id), int(product_id), 1, datetime.datetime.now())
-    return redirect('/saved')
+    num_items = request.form.get('quantity')
+    if int(num_items) > 0:
+        SavedItem.add_to_cart(current_user.id, int(seller_id), int(product_id), num_items, datetime.datetime.now())
+        return redirect('/saved')
+    else:
+        return redirect(url_for('product.product_page', product_id=product_id))
 
 @bp.route('/product/<int:orderid>', methods=['GET'])
 def product_get_items(orderid):

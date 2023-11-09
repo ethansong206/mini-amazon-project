@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="update-balance-container">
+  <div class="update-balance-page">
+    <h1>Your current balance is {{"${:,.2f}".format(user.balance)}}</h1>
+    <form class="update-balance-form"
+      action="{{url_for('users.update_balance')}}" method="POST">
+      <div class="toggle btn-group-custom">
+        <div class="balance-input-btn">
+          <input type="radio" name="options" id="add-balance" value="add" checked />
+          <label for="add-balance">Add</label>
+        </div>
+        <div class="balance-input-btn">
+          <input type="radio" name="options" id="withdraw-balance" value="withdraw" />
+          <label for="withdraw-balance">Withdraw</label>
+        </div>
+      </div>
+      <div class="amount-input">
+        <input type="number" name="amount" id="amount" placeholder="input an amount..." />
+      </div>
+      <button class="update-balance-button" type="submit">submit</button>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

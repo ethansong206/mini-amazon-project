@@ -117,11 +117,27 @@ def update_email():
         User.update_email(id, email)
     return redirect(url_for('users.info'))
 
-@bp.route('/info/updatebalance', methods=['POST'])
-def update_balance():
+@bp.route('/info/balance', methods=['GET'])
+def edit_balance():
     id = current_user.id
-    balance = request.form.get('balance')
-    if not balance == '':
-        User.update_balance(id, balance)
-    return redirect(url_for('users.info'))
+    # balance = request.form.get('balance')
+    return render_template('balance.html', user=current_user)
+
+@bp.route('/info/balance/edit', methods=['POST'])
+def update_balance():
+    curr_balance = User.get(current_user.id).balance
+    # print(curr_balance)
+    amount = request.form.get('amount')
+    # print(amount)
+    is_add = request.form.get('options')
+    
+    if is_add == 'add':
+        User.update_balance(current_user.id, amount, True)
+    elif int(curr_balance) > int(amount):
+        User.update_balance(current_user.id, amount, False)
+    else:
+        return redirect(url_for('users.edit_balance'))
+
+    return redirect(url_for('users.edit_balance'))
+
     
