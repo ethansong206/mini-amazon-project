@@ -24,6 +24,7 @@ WHERE id = :id
         LEFT JOIN Products Pro
         ON Pur.pid = Pro.id
         WHERE seller_id=:id
+        ORDER BY Pur.time_purchased DESC
         ''',
         id=id)
 

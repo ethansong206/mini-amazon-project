@@ -20,10 +20,10 @@
         <td>{{item.num_items}}</td>
         <td>{{item.status}}</td>
         <td>{{months[item.time_purchased.strftime('%m')|int - 1]}} {{item.time_purchased.strftime('%d, %Y')}}
-          {% if item.time_purchased.strftime('%h')|int < 12 %}
+          {% if item.time_purchased.strftime('%H')|int < 12 %}
           {{item.time_purchased.strftime('%H:%M')}} AM</td>
           {% else %}
-          {{item.time_purchased.strftime('%H:%M')}} PM</td>
+          {{item.time_purchased.strftime('%H')|int - 12}}{{item.time_purchased.strftime(':%M')}} PM</td>
           {% endif %}
         <td>{{humanize_time(item.time_updated)}}</td>
       </tr>
