@@ -423,14 +423,26 @@ button {
   border: none;
 }
 
+.edit-balance {
+  font-size: 1rem;
+  margin-top: .3rem;
+  color: var(--royal-blue);
+}
+
 #edit-balance {
   color: gray;
   font-size: .8rem;
   text-decoration: none;
+  float: right;
+  text-align: right;
 }
 
 #edit-balance:hover {
   text-decoration: underline;
+}
+
+#negative-balance-warning {
+  color: var(--red);
 }
 
 /* CHECKOUT */
@@ -474,7 +486,7 @@ button {
 .item-price-cell {
   display: flex;
   gap: 1rem;
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
   text-align: right;
   float: right;
 }
@@ -483,34 +495,9 @@ button {
   width: 5rem;
 }
 
-.checkout-total th {
+.balance-line th, .balance-line td {
+  padding: .5rem 0;
   font-size: 1.3rem;
-  padding: 2rem 0;
-}
-
-.checkout-total td {
-  font-size: 1.3rem;
-  padding: 2rem;
-}
-
-.balance {
-  font-size: 2rem;
-  text-align: center;
-}
-
-.checkout .balance .edit-balance {
-  font-size: 1rem;
-  text-decoration: none;
-  color: gray;
-  padding: 0 .5rem;
-  transition: all;
-  transition-duration: 200ms;
-}
-
-.checkout .balance .edit-balance:hover {
-  color: black;
-  cursor: pointer;
-  text-decoration: underline;
 }
 
 .place-order {

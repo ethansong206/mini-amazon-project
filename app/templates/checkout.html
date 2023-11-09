@@ -24,18 +24,39 @@
         <td></td>
       </tr>
       {% endfor %}
-      <tr class="checkout-total">
+      <tr class="balance-line">
+        <th>Balance</th>
+        <td class="item-price-cell">
+          <a href="/info" class="edit-balance">add funds</a> {{ "${:,.2f}".format(int_balance) }}
+        </td>
+      </tr>
+      <tr class="balance-line">
         <th>Total</th>
         <td class="item-price-cell">
-          ${{subtotal}}
+        {% if user.balance >= int_subtotal %}
+          - 
+          {% endif %}
+          {{ "${:,.2f}".format(subtotal|float) }}
         </td>
+      </tr>
+      <tr class="balance-line">
+        <th>Balance After Order</th>
+        {% if user.balance >= int_subtotal %}
+        <td class="item-price-cell">
+          = {{ "${:,.2f}".format(int_balance - int_subtotal) }}
+        </td>
+        {% else %}
+        <td class="item-price-cell" id="negative-balance-warning">
+          You need more funds to make this purchase.
+        </td>
+        {% endif %}
       </tr>
     </tbody>
   </table>
-  <div class="balance">
+  <!-- <div class="balance">
     Your balance is currently <span>{{ "${:,.2f}".format(int_balance) }}</span><a href="/account" class="edit-balance">add funds</a>
 
-  </div>
+  </div> -->
   {% if user.balance >= int_subtotal %}
   <div class="place-order">
     <form action="{{ url_for('saved.saved_submit_order') }}" method="POST">
@@ -45,7 +66,7 @@
     </form>
   </div>
   {% endif %}
-  {% if user.balance < int_subtotal %}
+  {% if int_balance < int_subtotal %}
   <div class="place-order">
     <form action="{{ url_for('saved.saved_submit_order') }}" method="POST">
       <button id="invalid-balance" disabled type="submit">
