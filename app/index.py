@@ -1,5 +1,6 @@
 from flask import render_template
 from flask_login import current_user
+from humanize import naturaltime
 import datetime
 
 from .models.product import Product
@@ -10,6 +11,8 @@ from .models.seller import Seller
 from flask import Blueprint
 bp = Blueprint('index', __name__)
 
+def humanize_time(dt):
+    return naturaltime(datetime.datetime.now() - dt)
 
 @bp.route('/')
 def index():
@@ -25,8 +28,11 @@ def index():
         purchases = None
     # render the page by adding information to the index.html file
     categories = Product.get_all_categories()
+    months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases,
                            is_seller=is_seller,
-                           categories=categories)
+                           categories=categories,
+                           months=months,
+                           humanize_time=humanize_time)
