@@ -5,6 +5,7 @@ import datetime
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.savedproduct import SavedItem
 from .models.user import User
 from .models.seller import Seller
 
@@ -15,15 +16,21 @@ def humanize_time(dt):
     return naturaltime(datetime.datetime.now() - dt)
 
 @bp.route('/')
+def home():
+    return render_template('home.html')
+
+@bp.route('/index')
 def index():
     is_seller = False
     # get all available products for sale:
     products = Product.get_all(1)
+    cart = []
     # find the products current user has bought:
     if current_user.is_authenticated:
         purchases = User.get_purchase_history(current_user.id)
         if Seller.get(current_user.id):
             is_seller = True
+        cart = SavedItem.get_valid_cart_by_uid(current_user.id)
     else:
         purchases = None
     # render the page by adding information to the index.html file
@@ -35,4 +42,5 @@ def index():
                            is_seller=is_seller,
                            categories=categories,
                            months=months,
-                           humanize_time=humanize_time)
+                           humanize_time=humanize_time,
+                           cart=cart)

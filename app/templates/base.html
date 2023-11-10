@@ -10,25 +10,28 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;600;700&family=Roboto:wght@100;300;400;700&display=swap');
   </style>
+  <script src="https://kit.fontawesome.com/f90f0236f5.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
   <div class="sidenav">
     {% block msg %}
-      <h1 style="color:aliceblue">Welcome to CompSci 316 Mini Amazon!</h1>
       <div  class="nav-buttons">
-        <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">To Home</a>
+        <a href="{{ url_for('index.index') }}" class="home-link">316 Mini Amazon</a>
         <br>
         <div class="nav-user">
           {% if current_user.is_authenticated %}
-            <span id="user-welcome">Hello {{current_user.firstname}}!</span>
-            <a href="{{ url_for('saved.saved') }}" type="button" class="btn btn-light">
-              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg> View cart</a>
-            <a href="{{ url_for('users.info') }}" type="button" class="btn btn-light">Account info</a>
-            <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+            <span id="user-welcome" class="nav-icon">Hello {{current_user.firstname}}!</span>
+            <a href="{{ url_for('users.info') }}" type="button" class="nav-icon">
+              <i class="fa-solid fa-user"></i>
+            </a>
+            <a href="{{ url_for('saved.saved') }}" type="button" class="nav-icon cart-icon">
+              <i class="fa-solid fa-cart-shopping"></i>
+            <a href="{{ url_for('users.logout') }}" type="button" class="nav-icon">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
           {% else %}
-            <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">log in</a>
+            <a href="{{ url_for('users.login') }}" type="button" class="login-button">log in</a>
           {% endif %}
         </div>
       </div>
@@ -36,6 +39,11 @@
   </div>
   <div class="main">
     {% block content %}{% endblock %}
+  </div>
+  <div class="footer">
+    <span>COMPSCI 316 Duke University</span>
+    <span>Images from <a href="unsplash.com">unsplash.com</a></span>
+    
   </div>
 </body>
 
