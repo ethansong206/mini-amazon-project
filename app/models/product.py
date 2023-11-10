@@ -47,13 +47,16 @@ LIMIT :k
         return rows if rows else []
     
     @staticmethod
-    def get_all_sellers(id):
+    def get_all_sellers(uid, pid):
         rows = app.db.execute('''
-SELECT *
+SELECT I.pid, I.seller_id, I.quantity, S.num_items, I.price
 FROM Inventory AS I
-WHERE pid = :id
+LEFT JOIN (SELECT * FROM SavedItems WHERE uid=:uid) as S
+ON I.pid = S.pid
+AND I.seller_id = S.seller_id
+WHERE I.pid = :pid
 ''',
-                              id=id)
+                              uid=uid, pid=pid)
         # sellers = [row.creator_id for row in rows]
         return rows if rows else []
     

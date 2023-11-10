@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="seller-orders">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Product ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Quantity Ordered</th>
+        <th scope="col">Order Status</th>
+        <th scope="col">Date Purchased</th>
+        <th scope="col">Last Updated</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in order_items %}
+      <tr>
+        <th scope="row">{{item.pid}}</th>
+        <td>{{item.name}}</td>
+        <td>{{item.num_items}}</td>
+        <td>{{item.status}}</td>
+        <td>{{months[item.time_purchased.strftime('%m')|int - 1]}} {{item.time_purchased.strftime('%d, %Y')}}
+          {% if item.time_purchased.strftime('%H')|int < 12 %}
+          {{item.time_purchased.strftime('%H:%M')}} AM</td>
+          {% else %}
+          {{item.time_purchased.strftime('%H')|int - 12}}{{item.time_purchased.strftime(':%M')}} PM</td>
+          {% endif %}
+        <td>{{humanize_time(item.time_updated)}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+{% endblock %}

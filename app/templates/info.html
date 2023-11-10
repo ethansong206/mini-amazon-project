@@ -2,9 +2,9 @@
 
 <br /><br />
 <h2>Account Info:</h2>
-<table class="table table-hover table-bordered container">
+<table class="table">
   
-  <thead class="thead-dark">
+  <thead class="">
     <tr>
       <th scope="col">First name</th>
       <th scope="col">Last name</th>
@@ -49,13 +49,11 @@
             <button type="submit">&check;</button>
         </form>
       </td>
-      <td scope="row"class="">
-        <form action="{{ url_for('users.update_balance') }}" 
-            method="POST"
-            >
-            <input type="text" id="balance" name="balance" value="{{user.balance}}">
-            <button type="submit">&check;</button>
-        </form>
+      <td scope="row" class="">
+        <a href="{{ url_for('users.edit_balance') }}">
+            add/withdraw funds
+        </a>
+        {{ "$ {:,.2f}".format(user.balance) }}
       </td>
       <th scope="row">{{user.id}}</th>
     </tr>
