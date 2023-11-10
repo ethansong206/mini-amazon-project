@@ -229,7 +229,7 @@
           <th scope="col">Price</th>
           <th scope="col">Status</th>
           <th scope="col">Time Purchased</th>
-          <th scope="col">Time Updated</th>
+          <th scope="col">Last Updated</th>
         </tr>
       </thead>
       <tbody>
@@ -243,7 +243,7 @@
             <th scope="row">{{purchase.name}}</th>
             <th scope="row">{{purchase.seller_id}}</th>
             <th scope="row">{{purchase.num_items}}</th>
-            <th scope="row">${{purchase.price}}</th>
+            <th scope="row">{{"${:,.2f}".format(purchase.price)}}</th>
             {% if purchase.status == "On Hold" %}
             <th scope="row" class="purchase-on-hold order-status-link">
               <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
@@ -265,8 +265,13 @@
                  </a>
               </th>
               {% endif %}
-              <th scope="row">{{purchase.time_purchased}}</th>
-              <th scope="row">{{purchase.time_updated}}</th>
+              <td>{{months[purchase.time_purchased.strftime('%m')|int - 1]}} {{purchase.time_purchased.strftime('%d, %Y')}}
+                {% if purchase.time_purchased.strftime('%H')|int < 12 %}
+                {{purchase.time_purchased.strftime('%H:%M')}} AM</td>
+                {% else %}
+                {{purchase.time_purchased.strftime('%H')|int - 12}}{{purchase.time_purchased.strftime(':%M')}} PM</td>
+                {% endif %}
+              <th scope="row">{{humanize_time(purchase.time_updated)}}</th>
           </tr> 
         {% endfor %}
       </tbody>
