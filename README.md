@@ -1,3 +1,26 @@
+# MILESTONE 4 README
+
+Milestone 4 project walkthrough: https://youtu.be/KD2yAdwl8lw
+
+Members:
+
+Jonny Chang: Inventory/Order Fulfillment
+
+Phillip Kang: Accounts/Purchases
+
+Ethan Song: Products
+
+Miles Eng: Cart/Orders
+
+
+
+You can find all the work we have completed in the gitlab linked below: Link to GitLab: https://gitlab.oit.duke.edu/mre29/mini-amazon-skeleton/-/blob/main/README.md
+
+
+
+
+
+
 # Skeleton Code for CompSci 316 Standard Course Project.
 
 Originally created by [Rickard
