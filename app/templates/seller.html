@@ -2,39 +2,180 @@
 
 <br /><br />
 {% if is_seller %}
+<a href="{{url_for('seller.seller_get_orders')}}">fulfill orders</a>
+<script>
+  var kInput = document.getElementById("k");
+  var currentKValue = document.getElementById("currentKValue");
+  var clearKButton = document.getElementById("clearKButton");
+
+  function getQueryParam(name) {
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
+  var kFromURL = getQueryParam("k");
+  if (kFromURL) {
+    kInput.value = kFromURL;
+    currentKValue.textContent = kFromURL;
+    if (parseInt(kFromURL) > 0) {
+      clearKButton.style.display = "inline";
+    }
+  }
+  function clearKValue() {
+    kInput.value = "";
+    clearKButton.style.display = "none";
+    window.location.href = '/';
+  }
+  clearKButton.addEventListener("click", clearKValue);
+</script>  
 <h2>Your inventory:</h2>
-<table class="table table-hover table-bordered container" class="product-table">
-  <thead class="table">
-    <tr>
-      <th scope="col">Product Name</th>
-      <th scope="col">Price</th>
-      <th scope="col">Quantity</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for item in inventory_items%}
-    <tr>
-      <td scope="row">{{item.name}}</td>
-      <td scope="row">
-        <form action="{{ url_for('seller.update_inventory_price', pid=item.pid) }}" 
-          method="POST"
-          class="qty">
-          <input type="number" id="price" name="price" value="{{item.price}}" step="0.01" min="0.01">
-          <button id="qty-update" type="submit">&check;</button>
-        </form>
-      </td>
-      <td scope="row">
-        <form action="{{ url_for('seller.update_inventory_qty', pid=item.pid) }}" 
-          method="POST"
-          class="qty">
-          <input type="number" id="quantity" name="quantity" value="{{item.quantity}}">
-          <button id="qty-update" type="submit">&check;</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<h5 class="form-inline">Products to show per page:
+  <div class="radio-container">
+    <input type="radio" id="perPage10" name="perPage" value="10" checked style="margin-right: 0; padding: 0;">
+    <label for="perPage10" class="radio-label">10</label>
+  </div>
+  <div class="radio-container">
+    <input type="radio" id="perPage25" name="perPage" value="25" style="margin-right: 0; padding: 0;">
+    <label for="perPage25" class="radio-label">25</label>
+  </div>
+  <div class="radio-container">
+    <input type="radio" id="perPage50" name="perPage" value="50" style="margin-right: 0; padding: 0;">
+    <label for="perPage50" class="radio-label">50</label>
+  </div>
+  <!-- <form class="form-inline" action="{{ url_for('product.search_for') }}" method="GET">
+    Search:
+    <div class="form-group">
+      <input type="text" class="form-control" name="search" placeholder="Search keywords">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form> -->
+</h5>
+<div class="product-table">
+  <table class="table table-hover table-bordered container" class="product-table">
+    <thead class="table">
+      <tr>
+        <th scope="col">Product Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+      </tr>
+    </thead>
+    <tbody id="prodTableBody">
+      {% for item in inventory_items%}
+      <tr>
+        <td scope="row">{{item.name}}</td>
+        <td scope="row">
+          <form action="{{ url_for('seller.update_inventory_price', pid=item.pid) }}" 
+            method="POST"
+            class="qty">
+            <input type="number" id="price" name="price" value="{{item.price}}" step="0.01" min="0.01">
+            <button id="qty-update" type="submit">&check;</button>
+          </form>
+        </td>
+        <td scope="row">
+          <form action="{{ url_for('seller.update_inventory_qty', pid=item.pid) }}" 
+            method="POST"
+            class="qty">
+            <input type="number" id="quantity" name="quantity" value="{{item.quantity}}">
+            <button id="qty-update" type="submit">&check;</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <style>
+    #pageButtons {
+      display: inline;
+    }
+    #pageButtons button {
+      margin-right: 5px;
+      margin-left: 5px;
+    }
+    #pageButtons button.current-page {
+      background-color: #888888;
+      color:black;
+      font-weight: bold;
+    }
+  </style>
+  <div id="pagination" style="padding: 1rem;">
+    <button id="prevPage" class="btn btn-info"><<</button>
+    <div id="pageButtons"></div>
+    <button id="nextPage" class="btn btn-info">>></button>
+  </div>
+  
+  <script>
+    var perPageRadios = document.getElementsByName("perPage");
+    var prodTableBody = document.getElementById("prodTableBody");
+    var prevPageButton = document.getElementById("prevPage");
+    var nextPageButton = document.getElementById("nextPage");
+    var pageButtonsContainer = document.getElementById("pageButtons");
+  
+    var currentPage = 0;
+    var rowsPerPage = 10;
+  
+    function updateTable() {
+      var rows = prodTableBody.getElementsByTagName("tr");
+      var totalPages = Math.ceil(rows.length / rowsPerPage);
+  
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].style.display = "none";
+      }
+  
+      var startIndex = currentPage * rowsPerPage;
+      for (var i = startIndex; i < startIndex + rowsPerPage; i++) {
+        if (rows[i]) {
+          rows[i].style.display = "";
+        }
+      }
+  
+      prevPageButton.disabled = currentPage === 0;
+      nextPageButton.disabled = currentPage === totalPages - 1;
+  
+      updatePageButtons(totalPages);
+    }
+  
+    function updatePageButtons(totalPages) {
+      pageButtonsContainer.innerHTML = "";
+      for (var i = Math.max(0, currentPage - 2); i < Math.min(totalPages, currentPage + 3); i++) {
+        var button = document.createElement("button");
+        button.textContent = i + 1;
+        button.className = "btn btn-default";
+        button.addEventListener("click", function () {
+          currentPage = parseInt(this.textContent) - 1;
+          updateTable();
+        });
+        if (i === currentPage) {
+          button.className += " current-page";
+        }
+        pageButtonsContainer.appendChild(button);
+      }
+    }
+  
+    for (var i = 0; i < perPageRadios.length; i++) {
+      perPageRadios[i].addEventListener("change", function () {
+        rowsPerPage = parseInt(this.value);
+        currentPage = 0;
+        updateTable();
+      });
+    }
+    prevPageButton.addEventListener("click", function () {
+      if (currentPage > 0) {
+        currentPage--;
+        updateTable();
+      }
+    });
+    nextPageButton.addEventListener("click", function () {
+      var rows = prodTableBody.getElementsByTagName("tr");
+      var totalPages = Math.ceil(rows.length / rowsPerPage);
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        updateTable();
+      }
+    });
+  
+    updateTable();
+  </script>
 {% else %}
 <h2>You are not a seller</h2>
 {% endif %} 
