@@ -30,6 +30,11 @@
             <a href="{{ url_for('users.logout') }}" type="button" class="nav-icon">
               <i class="fa-solid fa-right-from-bracket"></i>
             </a>
+            {% if is_seller %}
+          <a href="/seller" type="button" class="btn btn-primary">Seller View</a>
+          {% endif %}
+          
+          <a href="/orders" type="button" class="btn btn-info">Recent Orders</a>
           {% else %}
             <a href="{{ url_for('users.login') }}" type="button" class="login-button">log in</a>
           {% endif %}

@@ -2,285 +2,279 @@
 
 {% block content %}
 
-{% if is_seller %}
-<br/>
-<a href="/seller" type="button" class="btn btn-primary">Seller View</a>
-{% endif %}
+<div class="index-screen">
 
-{% if current_user.is_authenticated %}
-<a href="/orders" type="button" class="btn btn-info">Recent Orders</a>
-{% endif %}
-<br />
-
-<div class="filter-products">
-  <h2>Products for sale:</h2>
-  <form class="form-inline" action="{{ url_for('product.most_expensive') }}" method="GET">
-    <div class="form-group filter-criteria">
-      <label for="k">Filter for top</label>
-      <input type="number" class="form-control" id="k" name="k" required min="1" style="width: 100px;">
-      <label for="category">most expensive items</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-  </form>
-  <div class="form-group">
-    <label for="k">Currently showing the <span id="currentKValue"></span><button id="clearKButton" class="btn btn-link" style="display: none;color:red;width:15px;text-align:center;padding:0;">X</button>  most expensive items</label>
-  </div>
-  <script>
-    var kInput = document.getElementById("k");
-    var currentKValue = document.getElementById("currentKValue");
-    var clearKButton = document.getElementById("clearKButton");
-  
-    function getQueryParam(name) {
-      var urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
-  
-    var kFromURL = getQueryParam("k");
-    if (kFromURL) {
-      kInput.value = kFromURL;
-      currentKValue.textContent = kFromURL;
-      if (parseInt(kFromURL) > 0) {
-        clearKButton.style.display = "inline";
-      }
-    }
-    function clearKValue() {
-      kInput.value = "";
-      clearKButton.style.display = "none";
-      window.location.href = '/';
-    }
-    clearKButton.addEventListener("click", clearKValue);
-  </script>  
-  <form class="form-inline" action="{{ url_for('product.all_category') }}" method="GET">
-      <label for="category">Filter for category:</label>
-      <select name="category" id="category" onchange="filterCategory()">
-        <option value="" selected="selected">Select category</option>
-        {% for cat in categories %}
-            <option value="{{ cat.name }}">{{ cat.name }}</option>
-        {% endfor %}
-    </select>
-  </form>
-</div>
-
-<style>
-  .radio-container {
-    display: inline-block;
-    vertical-align: middle;
-  }
-</style>
-
-<h5 class="form-inline">Products to show per page:
-  <div class="radio-container">
-    <input type="radio" id="perPage10" name="perPage" value="10" checked style="margin-right: 0; padding: 0;">
-    <label for="perPage10" class="radio-label">10</label>
-  </div>
-  <div class="radio-container">
-    <input type="radio" id="perPage25" name="perPage" value="25" style="margin-right: 0; padding: 0;">
-    <label for="perPage25" class="radio-label">25</label>
-  </div>
-  <div class="radio-container">
-    <input type="radio" id="perPage50" name="perPage" value="50" style="margin-right: 0; padding: 0;">
-    <label for="perPage50" class="radio-label">50</label>
-  </div>
-  <form class="form-inline" action="{{ url_for('product.search_for') }}" method="GET">
-    Search:
+  <div class="filter-products">
+    <h2>Products for sale:</h2>
+    <form class="form-inline" action="{{ url_for('product.most_expensive') }}" method="GET">
+      <div class="form-group filter-criteria">
+        <label for="k">Filter for top</label>
+        <input type="number" class="form-control" id="k" name="k" required min="1" style="width: 100px;">
+        <label for="category">most expensive items</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
     <div class="form-group">
-      <input type="text" class="form-control" name="search" placeholder="Search keywords">
+      <label for="k">Currently showing the <span id="currentKValue"></span><button id="clearKButton" class="btn btn-link" style="display: none;color:red;width:15px;text-align:center;padding:0;">X</button>  most expensive items</label>
     </div>
-    <button type="submit" class="btn btn-primary">Search</button>
-  </form>
-</h5>
-
-<script>
-  var currentCategory = document.getElementById("")
-
-  function filterCategory() {
-    var categorySelect = document.getElementById("category");
-    var category = categorySelect.value;
-
-    const newURL = `/filter?category=${category}`;
-
-    window.location.href = newURL;
-  }
-</script>
-<div class="product-table">
-  <table class='table'>
-    <thead class="">
-      <tr>
-        <th scope="col">Product ID</th>
-        <th scope="col">Product Name</th>
-        <th scope="col">Price</th>
-      </tr>
-    </thead>
-    <tbody id="prodTableBody">
-      {% for product in avail_products%}
-      <tr>
-        <th scope="row">{{product.id}}</th>
-        <td><a href="{{ url_for('product.product_page', product_id=product.id) }}" class="btn btn-link" style="padding:0;">{{product.name}}</a></td>
-        <td>${{product.price}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <script>
+      var kInput = document.getElementById("k");
+      var currentKValue = document.getElementById("currentKValue");
+      var clearKButton = document.getElementById("clearKButton");
+    
+      function getQueryParam(name) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+    
+      var kFromURL = getQueryParam("k");
+      if (kFromURL) {
+        kInput.value = kFromURL;
+        currentKValue.textContent = kFromURL;
+        if (parseInt(kFromURL) > 0) {
+          clearKButton.style.display = "inline";
+        }
+      }
+      function clearKValue() {
+        kInput.value = "";
+        clearKButton.style.display = "none";
+        window.location.href = '/';
+      }
+      clearKButton.addEventListener("click", clearKValue);
+    </script>  
+    <form class="form-inline" action="{{ url_for('product.all_category') }}" method="GET">
+        <label for="category">Filter for category:</label>
+        <select name="category" id="category" onchange="filterCategory()">
+          <option value="" selected="selected">Select category</option>
+          {% for cat in categories %}
+              <option value="{{ cat.name }}">{{ cat.name }}</option>
+          {% endfor %}
+      </select>
+    </form>
+  </div>
   
   <style>
-    #pageButtons {
-      display: inline;
-    }
-    #pageButtons button {
-      margin-right: 5px;
-      margin-left: 5px;
-    }
-    #pageButtons button.current-page {
-      background-color: #888888;
-      color:black;
-      font-weight: bold;
+    .radio-container {
+      display: inline-block;
+      vertical-align: middle;
     }
   </style>
-  <div id="pagination">
-    <button id="prevPage" class="btn btn-info"><<</button>
-    <div id="pageButtons"></div>
-    <button id="nextPage" class="btn btn-info">>></button>
-  </div>
+  
+  <h5 class="form-inline">Products to show per page:
+    <div class="radio-container">
+      <input type="radio" id="perPage10" name="perPage" value="10" checked style="margin-right: 0; padding: 0;">
+      <label for="perPage10" class="radio-label">10</label>
+    </div>
+    <div class="radio-container">
+      <input type="radio" id="perPage25" name="perPage" value="25" style="margin-right: 0; padding: 0;">
+      <label for="perPage25" class="radio-label">25</label>
+    </div>
+    <div class="radio-container">
+      <input type="radio" id="perPage50" name="perPage" value="50" style="margin-right: 0; padding: 0;">
+      <label for="perPage50" class="radio-label">50</label>
+    </div>
+    <form class="form-inline" action="{{ url_for('product.search_for') }}" method="GET">
+      Search:
+      <div class="form-group">
+        <input type="text" class="form-control" name="search" placeholder="Search keywords">
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+  </h5>
   
   <script>
-    var perPageRadios = document.getElementsByName("perPage");
-    var prodTableBody = document.getElementById("prodTableBody");
-    var prevPageButton = document.getElementById("prevPage");
-    var nextPageButton = document.getElementById("nextPage");
-    var pageButtonsContainer = document.getElementById("pageButtons");
+    var currentCategory = document.getElementById("")
   
-    var currentPage = 0;
-    var rowsPerPage = 10;
+    function filterCategory() {
+      var categorySelect = document.getElementById("category");
+      var category = categorySelect.value;
   
-    function updateTable() {
-      var rows = prodTableBody.getElementsByTagName("tr");
-      var totalPages = Math.ceil(rows.length / rowsPerPage);
+      const newURL = `/filter?category=${category}`;
   
-      for (var i = 0; i < rows.length; i++) {
-        rows[i].style.display = "none";
-      }
-  
-      var startIndex = currentPage * rowsPerPage;
-      for (var i = startIndex; i < startIndex + rowsPerPage; i++) {
-        if (rows[i]) {
-          rows[i].style.display = "";
-        }
-      }
-  
-      prevPageButton.disabled = currentPage === 0;
-      nextPageButton.disabled = currentPage === totalPages - 1;
-  
-      updatePageButtons(totalPages);
+      window.location.href = newURL;
     }
-  
-    function updatePageButtons(totalPages) {
-      pageButtonsContainer.innerHTML = "";
-      for (var i = Math.max(0, currentPage - 2); i < Math.min(totalPages, currentPage + 3); i++) {
-        var button = document.createElement("button");
-        button.textContent = i + 1;
-        button.className = "btn btn-default";
-        button.addEventListener("click", function () {
-          currentPage = parseInt(this.textContent) - 1;
-          updateTable();
-        });
-        if (i === currentPage) {
-          button.className += " current-page";
-        }
-        pageButtonsContainer.appendChild(button);
-      }
-    }
-  
-    for (var i = 0; i < perPageRadios.length; i++) {
-      perPageRadios[i].addEventListener("change", function () {
-        rowsPerPage = parseInt(this.value);
-        currentPage = 0;
-        updateTable();
-      });
-    }
-    prevPageButton.addEventListener("click", function () {
-      if (currentPage > 0) {
-        currentPage--;
-        updateTable();
-      }
-    });
-    nextPageButton.addEventListener("click", function () {
-      var rows = prodTableBody.getElementsByTagName("tr");
-      var totalPages = Math.ceil(rows.length / rowsPerPage);
-      if (currentPage < totalPages - 1) {
-        currentPage++;
-        updateTable();
-      }
-    });
-  
-    updateTable();
   </script>
-  
-  <br><br>
-  {% if current_user.is_authenticated %}
-  <h2>Your recent purchases:</h2>
-  <div class="product-table" id="recent-table">
-    <table class="table">
+  <div class="product-table">
+    <table class='table'>
       <thead class="">
         <tr>
-          <th scope="col">Order ID</th>
+          <th scope="col">Product ID</th>
           <th scope="col">Product Name</th>
-          <th scope="col">Seller ID</th>
-          <th scope="col">Quantity</th>
           <th scope="col">Price</th>
-          <th scope="col">Status</th>
-          <th scope="col">Time Purchased</th>
-          <th scope="col">Last Updated</th>
         </tr>
       </thead>
-      <tbody>
-        {% for purchase in purchase_history%}
+      <tbody id="prodTableBody">
+        {% for product in avail_products%}
         <tr>
-          <th scope="row">
-            <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-link">
-             {{purchase.order_id}}
-            </a>
-          </th>
-            <th scope="row">{{purchase.name}}</th>
-            <th scope="row">{{purchase.seller_id}}</th>
-            <th scope="row">{{purchase.num_items}}</th>
-            <th scope="row">{{"${:,.2f}".format(purchase.price)}}</th>
-            {% if purchase.status == "On Hold" %}
-            <th scope="row" class="purchase-on-hold order-status-link">
-              <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
-                {{purchase.status}}
-               </a>
+          <th scope="row">{{product.id}}</th>
+          <td><a href="{{ url_for('product.product_page', product_id=product.id) }}" class="btn btn-link" style="padding:0;">{{product.name}}</a></td>
+          <td>${{product.price}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <style>
+      #pageButtons {
+        display: inline;
+      }
+      #pageButtons button {
+        margin-right: 5px;
+        margin-left: 5px;
+      }
+      #pageButtons button.current-page {
+        background-color: #888888;
+        color:black;
+        font-weight: bold;
+      }
+    </style>
+    <div id="pagination">
+      <button id="prevPage" class="btn btn-info"><<</button>
+      <div id="pageButtons"></div>
+      <button id="nextPage" class="btn btn-info">>></button>
+    </div>
+    
+    <script>
+      var perPageRadios = document.getElementsByName("perPage");
+      var prodTableBody = document.getElementById("prodTableBody");
+      var prevPageButton = document.getElementById("prevPage");
+      var nextPageButton = document.getElementById("nextPage");
+      var pageButtonsContainer = document.getElementById("pageButtons");
+    
+      var currentPage = 0;
+      var rowsPerPage = 10;
+    
+      function updateTable() {
+        var rows = prodTableBody.getElementsByTagName("tr");
+        var totalPages = Math.ceil(rows.length / rowsPerPage);
+    
+        for (var i = 0; i < rows.length; i++) {
+          rows[i].style.display = "none";
+        }
+    
+        var startIndex = currentPage * rowsPerPage;
+        for (var i = startIndex; i < startIndex + rowsPerPage; i++) {
+          if (rows[i]) {
+            rows[i].style.display = "";
+          }
+        }
+    
+        prevPageButton.disabled = currentPage === 0;
+        nextPageButton.disabled = currentPage === totalPages - 1;
+    
+        updatePageButtons(totalPages);
+      }
+    
+      function updatePageButtons(totalPages) {
+        pageButtonsContainer.innerHTML = "";
+        for (var i = Math.max(0, currentPage - 2); i < Math.min(totalPages, currentPage + 3); i++) {
+          var button = document.createElement("button");
+          button.textContent = i + 1;
+          button.className = "btn btn-default";
+          button.addEventListener("click", function () {
+            currentPage = parseInt(this.textContent) - 1;
+            updateTable();
+          });
+          if (i === currentPage) {
+            button.className += " current-page";
+          }
+          pageButtonsContainer.appendChild(button);
+        }
+      }
+    
+      for (var i = 0; i < perPageRadios.length; i++) {
+        perPageRadios[i].addEventListener("change", function () {
+          rowsPerPage = parseInt(this.value);
+          currentPage = 0;
+          updateTable();
+        });
+      }
+      prevPageButton.addEventListener("click", function () {
+        if (currentPage > 0) {
+          currentPage--;
+          updateTable();
+        }
+      });
+      nextPageButton.addEventListener("click", function () {
+        var rows = prodTableBody.getElementsByTagName("tr");
+        var totalPages = Math.ceil(rows.length / rowsPerPage);
+        if (currentPage < totalPages - 1) {
+          currentPage++;
+          updateTable();
+        }
+      });
+    
+      updateTable();
+    </script>
+    
+    <br><br>
+    {% if current_user.is_authenticated %}
+    <h2>Your recent purchases:</h2>
+    <div class="product-table" id="recent-table">
+      <table class="table">
+        <thead class="">
+          <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Seller ID</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+            <th scope="col">Status</th>
+            <th scope="col">Time Purchased</th>
+            <th scope="col">Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for purchase in purchase_history%}
+          <tr>
+            <th scope="row">
+              <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-link">
+               {{purchase.order_id}}
+              </a>
             </th>
-            {% endif %}
-            {% if purchase.status == "Pending" %}
-              <th scope="row" class="purchase-pending order-status-link">
-                <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
-                  {{purchase.status}}
-                 </a>
-              </th>
-            {% endif %}
-            {% if purchase.status == "Fulfilled" %}
-              <th scope="row" class="purchase-fulfilled order-status-link">
+              <th scope="row">{{purchase.name}}</th>
+              <th scope="row">{{purchase.seller_id}}</th>
+              <th scope="row">{{purchase.num_items}}</th>
+              <th scope="row">{{"${:,.2f}".format(purchase.price)}}</th>
+              {% if purchase.status == "On Hold" %}
+              <th scope="row" class="purchase-on-hold order-status-link">
                 <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
                   {{purchase.status}}
                  </a>
               </th>
               {% endif %}
-              <td>{{months[purchase.time_purchased.strftime('%m')|int - 1]}} {{purchase.time_purchased.strftime('%d, %Y')}}
-                {% if purchase.time_purchased.strftime('%H')|int < 12 %}
-                {{purchase.time_purchased.strftime('%H:%M')}} AM</td>
-                {% else %}
-                {{purchase.time_purchased.strftime('%H')|int - 12}}{{purchase.time_purchased.strftime(':%M')}} PM</td>
+              {% if purchase.status == "Pending" %}
+                <th scope="row" class="purchase-pending order-status-link">
+                  <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
+                    {{purchase.status}}
+                   </a>
+                </th>
+              {% endif %}
+              {% if purchase.status == "Fulfilled" %}
+                <th scope="row" class="purchase-fulfilled order-status-link">
+                  <a href="{{ url_for('order.order_get_items', orderid=purchase.order_id )}}" class="order-status-link">
+                    {{purchase.status}}
+                   </a>
+                </th>
                 {% endif %}
-              <th scope="row">{{humanize_time(purchase.time_updated)}}</th>
-          </tr> 
-        {% endfor %}
-      </tbody>
-    </table>  
+                <td>{{months[purchase.time_purchased.strftime('%m')|int - 1]}} {{purchase.time_purchased.strftime('%d, %Y')}}
+                  {% if purchase.time_purchased.strftime('%H')|int < 12 %}
+                  {{purchase.time_purchased.strftime('%H:%M')}} AM</td>
+                  {% else %}
+                  {{purchase.time_purchased.strftime('%H')|int - 12}}{{purchase.time_purchased.strftime(':%M')}} PM</td>
+                  {% endif %}
+                <th scope="row">{{humanize_time(purchase.time_updated)}}</th>
+            </tr> 
+          {% endfor %}
+        </tbody>
+      </table>  
+    </div>
   </div>
+  {% else %}
+  <p>
+    <a href="{{ url_for('users.login') }}">Log in</a> to see your purchase
+    history!
+  </p>
+  {% endif %} 
 </div>
-{% else %}
-<p>
-  <a href="{{ url_for('users.login') }}">Log in</a> to see your purchase
-  history!
-</p>
-{% endif %} {% endblock %}
+{% endblock %}

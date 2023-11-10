@@ -17,6 +17,12 @@
   --red-tint-hover: #edd1d6;
   --yellow-tint: #faf7e8;
   --yellow-tint-hover: #faf2cf;
+  --home-sky: #005868;
+  --home-sky-hover: #014a57;
+  --default-dark: #00252b;
+  --default-light: #edf4f5;
+  --default-light-accent: #d8e4e6;
+  --gray: #b6c0c2;
 }
 
 section {
@@ -44,7 +50,7 @@ button {
 
 .sidenav {
   width: 100%;
-  background-color: var(--navy-blue);
+  background-color: var(--default-dark);
   overflow-x: hidden;
   padding: 20px;
   position: fixed;
@@ -92,9 +98,13 @@ button {
 }
 
 .main {
-  padding-bottom: 2rem;
   min-height: 95vh;
   padding-top: 10vh;
+  color: var(--default-dark);
+  background-color: var(--default-light);
+  display: flex;
+  font-display: column;
+  justify-content: center;
 }
 
 .login-button {
@@ -152,7 +162,7 @@ button {
 
 .footer {
   width: 100%;
-  background-color: var(--navy-blue);
+  background-color: var(--default-dark);
   color: white;
   padding: 0.5rem 1rem;
   display: flex;
@@ -228,33 +238,20 @@ button {
 
 /* INDEX */
 
-.filter-products {
+.index-screen {
+  min-height: 95vh;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: .5rem;
-  width: 98%;
-  margin: auto;
+  flex-direction: column;
+}
+
+.filter-products {
+
 }
 
 .product-table {
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   width: 95%;
   margin: auto;
-}
-
-.form-inline {
-  padding: 10px 0px;
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-}
-
-.filter-criteria {
-  display: flex;
-  flex-direction: row;
-  gap: 6px;
 }
 
 .filter-criteria #k {
@@ -327,6 +324,7 @@ button {
 .update-balance-container {
   min-height: 100%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
 }
@@ -335,7 +333,7 @@ button {
   width: 50%;
   margin: 4rem auto;
   padding: 2rem;
-  background-color: var(--light-gray);
+  background-color: var(--gray);
 }
 
 .update-balance-page h1 {
@@ -364,7 +362,7 @@ button {
 .balance-input-btn label {
   cursor: pointer;
   background-color: white;
-  color: var(--navy-blue);
+  color: var(--default-dark);
   padding: 0 1rem;
   align-items: center;
   vertical-align: center;
@@ -374,7 +372,7 @@ button {
   font-size: 1.2rem;
 }
 .balance-input-btn input:checked + label {
-  background-color: var(--navy-blue);
+  background-color: var(--default-dark);
   color: white;
   border: 3px solid var(--light-green);
 }
@@ -397,7 +395,14 @@ button {
 .update-balance-button {
   width: 20%;
   margin: auto;
-  background-color: var(--ash-gray);
+  background-color: var(--home-sky);
+  color: var(--default-light);
+  padding: .2rem 1rem;
+}
+
+.update-balance-button:hover {
+  background-color: var(--home-sky-hover);
+  cursor: pointer;
 }
 
 
@@ -468,7 +473,9 @@ button {
 /* CART */
 
 .saved {
-  width: screen;
+  width: 100%;
+  margin: auto;
+  height: 80vh;
 }
 
 .saved a {
@@ -510,6 +517,7 @@ button {
 .cart-left, .cart-right {
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   padding: 1rem;
+  background-color: var(--default-light-accent);
 }
 
 .cart-left {
@@ -529,7 +537,7 @@ button {
 .line-total {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid var(--ash-gray);
+  border-bottom: 1px solid var(--default-light);
   padding: .25rem 0;
 }
 
@@ -571,11 +579,11 @@ button {
 }
 
 .cart-update {
-  background-color: var(--light-gray);
+  background-color: var(--default-light);
 }
 
 .cart-update:hover {
-  background-color: var(--light-gray-hover);
+  background-color: var(--default-light-accent);
   cursor: pointer;
 }
 
@@ -586,7 +594,7 @@ button {
 .cart-remove button {
   color: var(--red);
   text-transform: lowercase;
-  background-color: white;
+  background-color: var(--default-light-accent);
 
 }
 
